@@ -1,1 +1,32 @@
-<h1>Hello World!</h1>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+            integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+            crossorigin=""></script> 
+    </head>
+    <body>
+        <div id="map" style="height:800px;"></div>
+        <script>
+            var mymap = L.map('map').setView([-34.696461172723474, -71.09802246093751], 9);
+  var OpenStreetMap_Mapnik = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(mymap);
+var wmsLayer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
+    layers: 'chile_mapper:dem_aoi_10m_tiled',
+    transparent: true,
+    format: 'image/png'
+}).addTo(mymap);
+var wms2Layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
+    layers: 'chile_mapper:dem_aoi_10m_hillshade',
+    transparent: true,
+    format: 'image/png',
+    opacity: 0.1
+}).addTo(mymap);
+        </script>
+    </body>
+</html>
+
