@@ -1,0 +1,26 @@
+{
+  "name": "chile-mapper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "tsc": "tsc",
+    "clean": "rimraf ./dist",
+    "dev": "parcel ./src/index.html --port 4000 --open",
+    "lint": "tslint --project .",
+    "build": "yarn clean && yarn lint && parcel build ./src/index.html"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/leaflet": "1.4.4",
+    "less": "3.9.0",
+    "parcel-bundler": "1.12.3",
+    "rimraf": "2.6.3",
+    "tslint": "5.17.0",
+    "typescript": "3.5.1"
+  },
+  "dependencies": {
+    "leaflet": "1.5.1"
+  }
+}
