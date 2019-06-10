@@ -3,15 +3,14 @@
 import '../styles.less'
 import 'leaflet/dist/leaflet.css'
 
-import * as L from 'leaflet'
+// polyfills
+import 'url-search-params-polyfill'
 
-let map = L.map('map').setView([51.505, -0.09], 12)
+import { getConfig } from './config'
+import { createMap } from './map'
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map)
+let config = getConfig(window.location.search)
 
-L.marker([51.5, -0.09]).addTo(map)
-    .bindPopup('A pretty CSS3 popup.<br> Easily customizable from Typescript.')
-    .openPopup()
-    
+// draw the leaflet map in the div
+let div = document.getElementById('map') as HTMLElement
+createMap(div, config)

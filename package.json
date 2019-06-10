@@ -21,6 +21,7 @@
     "typescript": "3.5.1"
   },
   "dependencies": {
-    "leaflet": "1.5.1"
+    "leaflet": "1.5.1",
+    "url-search-params-polyfill": "6.0.0"
   }
 }

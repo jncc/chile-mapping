@@ -1,0 +1,8 @@
+{
+    "layers": {
+        "layer1": {
+            "en": "Layer 1 display name",
+            "es": "Layer 1 nombre para mostrar"
+        }
+    }
+}

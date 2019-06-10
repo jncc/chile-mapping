@@ -22,7 +22,7 @@ Ensure you have [Node](https://nodejs.org/en/download/).
     yarn -v
     1.7.0
 
-Use the `.editorconfig` convention to standardise IDE configuration for all developers working on the project. In VS Code, install the *Editor Config for VS Code* extension.
+Use [.editorconfig](https://editorconfig.org/) to standardise IDE configuration for all developers working on the project. In VS Code, install the *Editor Config for VS Code* extension.
 
 Use [TsLint](https://palantir.github.io/tslint/). In VS Code, install the *TSLint* extension. In particular, we:
 
