@@ -1,8 +1,52 @@
 {
     "layers": {
-        "layer1": {
-            "en": "Layer 1 display name",
-            "es": "Layer 1 nombre para mostrar"
+        "dem": {
+            "en": "DEM (Digital Elevation Model)",
+            "es": "spanish DEM"
+        },
+        "burn_avoidance": {
+            "en": "Burn Avoidance",
+            "es": "Prevención de Incendio"
+        },
+        "ignition_susceptibility": {
+            "en": "Ignition Susceptibility",
+            "es": "Susceptibilidad del Hábitat a Ignición"
+        },
+        "water_yield": {
+            "en": "Annual Mean Water Yield",
+            "es": "Producción promedio anual de agua"
+        },
+        "rcp_45_water_yield": {
+            "en": "RCP4.5 Annual Mean Water Yield",
+            "es": "RCP4.5 Producción promedio anual de agua"
+        },
+        "rcp_85_water_yield": {
+            "en": "RCP8.5 Annual Mean Water Yield",
+            "es": "RCP8.5 Producción promedio anual de agua"
+        },
+        "habitat_map": {
+            "en": "Habitat Map with Landuse for Vineyards",
+            "es": "spanish habitat map"
+        },
+        "soil_loss": {
+            "en": "Soil Loss",
+            "es": "Perdida de suelo"
+        },
+        "hillshade": {
+            "en": "Hillshade",
+            "es": "spanish hillshade"
+        },
+        "roads": {
+            "en": "Roads",
+            "es": "spanish roads"
+        },
+        "subbasins": {
+            "en": "Sub-basins",
+            "es": "Sub-cuenca"
+        },
+        "rivers": {
+            "en": "Mean Daily Streamflow",
+            "es": "spanish rivers"
         }
     }
 }
