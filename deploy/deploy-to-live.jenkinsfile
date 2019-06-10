@@ -1,22 +1,11 @@
 pipeline {
-    agent { label ' dotnet ' }
+    agent {
+        docker { image 'node:10' }
+    }
     stages {
-        stage('Clone master branch') {
+        stage('Work in progress') {
             steps {
-                checkout([$class: 'GitSCM', 
-                    branches: [[name: '*/master']], 
-                    doGenerateSubmoduleConfigurations: false, 
-                    extensions: [[$class: 'RelativeTargetDirectory', 
-                                    relativeTargetDir: 'master']], 
-                    submoduleCfg: [], 
-                    userRemoteConfigs: [[url: 'https://github.com/jncc/chile-mapping.git']]])
-                dir('./master') {
-                    sh 'node -v'
-                    sh 'yarn -v'
-                    sh 'yarn'
-                    sh 'yarn build'
-                    // sh 'dotnet run -- -g -s $AWS_ELASTICSEARCH_INDEX -a $GOOGLE_ANALYTICS_ID -t $GOOGLE_TAG_MANAGER_ID'
-                }
+                sh 'yarn -v'
             }
         }
     }
