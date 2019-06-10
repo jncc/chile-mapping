@@ -1,52 +1,78 @@
 {
-    "layers": {
-        "dem": {
+    "base_layers": [
+        {
+            "id": "dem",
+            "layers": "chile_mapper:dem_aoi_10m_tiled",
             "en": "DEM (Digital Elevation Model)",
             "es": "spanish DEM"
         },
-        "burn_avoidance": {
+        {
+            "id": "burn_avoidance",
+            "layers": "chile_mapper:burn_avoidance",
             "en": "Burn Avoidance",
             "es": "Prevención de Incendio"
         },
-        "ignition_susceptibility": {
+        {
+            "id": "ignition_susceptibility",
+            "layers": "chile_mapper:ignition_susceptibility",
             "en": "Ignition Susceptibility",
             "es": "Susceptibilidad del Hábitat a Ignición"
         },
-        "water_yield": {
+        {
+            "id": "water_yield",
+            "layers": "chile_mapper:baseline_hruresults",
             "en": "Annual Mean Water Yield",
             "es": "Producción promedio anual de agua"
         },
-        "rcp_45_water_yield": {
+        {
+            "id": "rcp_45_water_yield",
+            "layers": "chile_mapper:rcp_45_hruresults",
             "en": "RCP4.5 Annual Mean Water Yield",
             "es": "RCP4.5 Producción promedio anual de agua"
         },
-        "rcp_85_water_yield": {
+        {
+            "id": "rcp_85_water_yield",
+            "layers": "chile_mapper:rcp_85_hruresults",
             "en": "RCP8.5 Annual Mean Water Yield",
             "es": "RCP8.5 Producción promedio anual de agua"
         },
-        "habitat_map": {
+        {
+            "id": "habitat_map",
+            "layers": "chile_mapper:habmap_landuse_wvineyards",
             "en": "Habitat Map with Landuse for Vineyards",
             "es": "spanish habitat map"
         },
-        "soil_loss": {
+        {
+            "id": "soil_loss",
+            "layers": "chile_mapper:usle_v2_mean_easymap",
             "en": "Soil Loss",
             "es": "Perdida de suelo"
-        },
-        "hillshade": {
+        }
+    ],
+    "overlay_layers": [
+        {
+            "id": "hillshade",
+            "layers": "chile_mapper:dem_aoi_10m_hillshade",
             "en": "Hillshade",
             "es": "spanish hillshade"
         },
-        "roads": {
+        {
+            "id": "roads",
+            "layers": "chile_mapper:roads",
             "en": "Roads",
             "es": "spanish roads"
         },
-        "subbasins": {
+        {
+            "id": "subbasins",
+            "layers": "chile_mapper:subbasins",
             "en": "Sub-basins",
             "es": "Sub-cuenca"
         },
-        "rivers": {
+        {
+            "id": "rivers",
+            "layers": "chile_mapper:baseline_rchresults",
             "en": "Mean Daily Streamflow",
             "es": "spanish rivers"
         }
-    }
+    ]
 }
