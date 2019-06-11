@@ -63,9 +63,11 @@ export function createMap(container: HTMLElement, config: Config) {
   legend.addTo(map)
 
   // change legend depending on base layer
-  map.on('baselayerchange', function(e) {
+  map.on('baselayerchange', (e) => {
+    let event = e as L.LayersControlEvent
+    let layer = event.layer as L.TileLayer.WMS
     let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
-      + e.target.layer.wmsParams.layers
+      + layer.options.layers
 
     map.removeControl(legend)
     legend.onAdd = function () {
@@ -80,9 +82,11 @@ export function createMap(container: HTMLElement, config: Config) {
 
   // the rivers overlay also needs a legend
   map.on('overlayadd', function(e) {
-    if (content.overlay_layers.find(x => x.layers == e.target.wmsParams.layers)!.display_legend) {
+    let event = e as L.LayersControlEvent
+    let layer = event.layer as L.TileLayer.WMS
+    if (content.overlay_layers.find(x => x.layers == layer.wmsParams.layers)!.display_legend) {
       let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
-        + e.target.wmsParams.layers
+        + layer.wmsParams.layers
 
       overlayLegend.onAdd = function () {
           let div = L.DomUtil.create('div', 'info legend')
@@ -96,7 +100,9 @@ export function createMap(container: HTMLElement, config: Config) {
   })
 
   map.on('overlayremove', function(e) {
-    if (content.overlay_layers.find(x => x.layers == e.target.wmsParams.layers)!.display_legend) {
+    let event = e as L.LayersControlEvent
+    let layer = event.layer as L.TileLayer.WMS
+    if (content.overlay_layers.find(x => x.layers == layer.wmsParams.layers)!.display_legend) {
       map.removeControl(overlayLegend)
     }
   })
