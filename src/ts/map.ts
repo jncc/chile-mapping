@@ -5,10 +5,11 @@ import * as content from '../content.json'
 
 export function createMap(container: HTMLElement, config: Config) {
   
-  let map = L.map(container).setView([-34.696461172723474, -71.09802246093751], 9)
+  let map = L.map(container, {zoomControl: false}).setView([-34.696461172723474, -71.09802246093751], 9)
+  new L.Control.Zoom({ position: 'bottomleft' }).addTo(map)
   
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map)
 
   // add base maps
@@ -47,7 +48,58 @@ export function createMap(container: HTMLElement, config: Config) {
     Object.assign(overlayMaps, {[overlay[config.language]]: layer})
   })
   
+  let legend = L.control({position: 'topright'})
+  let overlayLegend = L.control({position: 'topright'})
+
+  // add default legend
+  let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' +
+    content.base_layers.find(x => x.id == "dem").layers
+  legend.onAdd = function () {
+    let div = L.DomUtil.create('div', 'info legend')
+
+    div.innerHTML += '<img src="' + legendUrl + '" />'
+    return div
+  }
+  legend.addTo(map)
+
+  // change legend depending on base layer
+  map.on('baselayerchange', function(e) {
+    let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + e.layer.wmsParams.layers
+
+    map.removeControl(legend)
+    legend.onAdd = function () {
+        let div = L.DomUtil.create('div', 'info legend')
+
+        div.innerHTML += '<img src="' + legendUrl + '" />'
+        return div
+    }
+
+    legend.addTo(map)
+  })
+
+  // the rivers overlay also needs a legend
+  map.on('overlayadd', function(e) {
+    if (content.overlay_layers.find(x => x.layers == e.layer.wmsParams.layers).display_legend) {
+      let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + e.layer.wmsParams.layers
+
+      overlayLegend.onAdd = function () {
+          let div = L.DomUtil.create('div', 'info legend')
+
+          div.innerHTML += '<img src="' + legendUrl + '" />'
+          return div
+      }
+
+      overlayLegend.addTo(map)
+    }
+  })
+
+  map.on('overlayremove', function(e) {
+    map.removeControl(overlayLegend)
+  })
+
   L.control.layers(baseMaps, overlayMaps, {
-    collapsed: false
+    collapsed: false,
+    position: 'topleft'
   }).addTo(map)
+
 }
