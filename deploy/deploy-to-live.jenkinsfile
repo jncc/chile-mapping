@@ -32,7 +32,7 @@ pipeline {
                         sh 'cat CNAME'
                         sh 'ls'
                         sh 'git add --all'
-                        sh 'git commit -a -m "Jenkins build #' + env.BUILD_NUMBER + '" || echo \'Commit failed. There is probably nothing to commit.\''
+                        sh 'git commit -a -m "Jenkins build ' + env.BUILD_NUMBER + '" || echo \'Commit failed. There is probably nothing to commit.\''
                         sh 'git push --force || echo \'Push failed. There is possibly nothing to commit.\''
                     }
                 }
