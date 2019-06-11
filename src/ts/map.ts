@@ -53,7 +53,7 @@ export function createMap(container: HTMLElement, config: Config) {
 
   // add default legend
   let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' +
-    content.base_layers.find(x => x.id == "dem").layers
+    content.base_layers.find(x => x.id == 'dem').layers
   legend.onAdd = function () {
     let div = L.DomUtil.create('div', 'info legend')
 
@@ -64,7 +64,8 @@ export function createMap(container: HTMLElement, config: Config) {
 
   // change legend depending on base layer
   map.on('baselayerchange', function(e) {
-    let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + e.layer.wmsParams.layers
+    let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
+      + e.layer.wmsParams.layers
 
     map.removeControl(legend)
     legend.onAdd = function () {
@@ -80,7 +81,8 @@ export function createMap(container: HTMLElement, config: Config) {
   // the rivers overlay also needs a legend
   map.on('overlayadd', function(e) {
     if (content.overlay_layers.find(x => x.layers == e.layer.wmsParams.layers).display_legend) {
-      let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' + e.layer.wmsParams.layers
+      let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
+        + e.layer.wmsParams.layers
 
       overlayLegend.onAdd = function () {
           let div = L.DomUtil.create('div', 'info legend')
