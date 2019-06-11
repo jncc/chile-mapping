@@ -4,11 +4,11 @@
   "private": true,
   "description": "",
   "scripts": {
-    "tsc": "tsc",
-    "clean": "rimraf ./dist",
+    "tsc": "tsc --noEmit",
     "dev": "parcel ./src/index.html --port 4000 --open",
     "lint": "tslint --project .",
-    "build": "yarn clean && yarn lint && parcel build ./src/index.html"
+    "clean": "rimraf ./dist",
+    "build": "yarn clean && yarn tsc && yarn lint && parcel build ./src/index.html"
   },
   "author": "",
   "license": "MIT",
