@@ -96,7 +96,9 @@ export function createMap(container: HTMLElement, config: Config) {
   })
 
   map.on('overlayremove', function(e) {
-    map.removeControl(overlayLegend)
+    if (content.overlay_layers.find(x => x.layers == e.layer.wmsParams.layers).display_legend) {
+      map.removeControl(overlayLegend)
+    }
   })
 
   L.control.layers(baseMaps, overlayMaps, {

@@ -67,24 +67,6 @@
             "es": "spanish soil water content"
         },
         {
-            "id": "baseline_hru_results",
-            "layers": "chile_mapper:baseline_hruresults",
-            "en": "Baseline Results",
-            "es": "spanish baseline results"
-        },
-        {
-            "id": "rcp_45_hru_results",
-            "layers": "chile_mapper:rcp_45_hruresults",
-            "en": "RCP 4.5 HRU Results",
-            "es": "spanish rcp 4.5 hru results"
-        },
-        {
-            "id": "rcp_85_hru_results",
-            "layers": "chile_mapper:rcp_85_hruresults",
-            "en": "RCP 8.5 HRU Results",
-            "es": "spanish rcp 8.5 hru results"
-        },
-        {
             "id": "mean_percolation",
             "layers": "chile_mapper:mean_percolation",
             "en": "Mean Percolation",
