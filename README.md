@@ -37,6 +37,6 @@ Then, to launch a local instance of the app, run:
 
     yarn dev
 
-To build a distribution / deployment into the `build/` directory:
+To build a distribution / deployment into the `dist/` directory:
 
     yarn build
