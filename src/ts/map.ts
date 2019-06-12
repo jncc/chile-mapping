@@ -14,46 +14,46 @@ export function createMap(container: HTMLElement, config: Config) {
 
   // add base maps
   let baseMaps = {}
-  content.base_layers.forEach(baseLayer => {
+  for (let baseLayer of keys(baseLayers)) {
     let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
-      layers: baseLayer.layers,
+      layers: baseLayers[baseLayer].wms_name,
       transparent: true,
       format: 'image/png',
       opacity: 0.5
     })
 
     // start with this as default
-    if (baseLayer.id == 'dem') {
+    if (baseLayer == 'dem') {
       layer.addTo(map)
     }
 
-    Object.assign(baseMaps, {[baseLayer[config.language]]: layer})
-  })
+    Object.assign(baseMaps, {[content.base_layers[baseLayer][config.language]]: layer})
+  }
 
   // add overlays
   let overlayMaps = {}
-  content.overlay_layers.forEach(overlay => {
+  for (let overlay of keys(overlayLayers)) {
     let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
-      layers: overlay.layers,
+      layers: overlayLayers[overlay].wms_name,
       transparent: true,
       format: 'image/png',
       opacity: 0.5
     })
 
     // start with this as default
-    if (overlay.id == 'hillshade') {
+    if (overlay == 'hillshade') {
       layer.addTo(map)
     }
 
-    Object.assign(overlayMaps, {[overlay[config.language]]: layer})
-  })
+    Object.assign(overlayMaps, {[content.overlay_layers[overlay][config.language]]: layer})
+  }
   
   let legend = new L.Control({position: 'topright'})
   let overlayLegend = new L.Control({position: 'topright'})
 
   // add default legend
-  let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' +
-    content.base_layers.find(x => x.id == 'dem')!.layers
+  let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
+    + baseLayers.dem.wms_name
   legend.onAdd = function () {
     let div = L.DomUtil.create('div', 'info legend')
 
@@ -84,26 +84,30 @@ export function createMap(container: HTMLElement, config: Config) {
   map.on('overlayadd', function(e) {
     let event = e as L.LayersControlEvent
     let layer = event.layer as L.TileLayer.WMS
-    if (content.overlay_layers.find(x => x.layers == layer.wmsParams.layers)!.display_legend) {
-      let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
-        + layer.wmsParams.layers
+    for (let overlay of keys(overlayLayers)) {
+      if (overlayLayers[overlay].wms_name == layer.wmsParams.layers && overlayLayers[overlay].display_legend) {
+        let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
+          + layer.wmsParams.layers
 
-      overlayLegend.onAdd = function () {
-          let div = L.DomUtil.create('div', 'info legend')
+        overlayLegend.onAdd = function () {
+            let div = L.DomUtil.create('div', 'info legend')
 
-          div.innerHTML += '<img src="' + legendUrl + '" />'
-          return div
-      }
+            div.innerHTML += '<img src="' + legendUrl + '" />'
+            return div
+        }
 
-      overlayLegend.addTo(map)
+        overlayLegend.addTo(map)
+        }
     }
   })
 
   map.on('overlayremove', function(e) {
     let event = e as L.LayersControlEvent
     let layer = event.layer as L.TileLayer.WMS
-    if (content.overlay_layers.find(x => x.layers == layer.wmsParams.layers)!.display_legend) {
-      map.removeControl(overlayLegend)
+    for (let overlay of keys(overlayLayers)) {
+      if (overlayLayers[overlay].wms_name == layer.wmsParams.layers && overlayLayers[overlay].display_legend) {
+        map.removeControl(overlayLegend)
+      }
     }
   })
 
@@ -111,14 +115,6 @@ export function createMap(container: HTMLElement, config: Config) {
     collapsed: false,
     position: 'topleft'
   }).addTo(map)
-
-  // example of looping through statically-known layers (check out the type of `layer`!)
-  for (let layer of keys(baseLayers)) {
-    let code = baseLayers[layer].code
-    let foo = baseLayers[layer].foo
-    let displayName = content2.baseLayers[layer][config.language]
-    console.log(code + ' - ' + displayName + ' - ' + foo)
-  }
 }
 
 const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[]
@@ -126,31 +122,58 @@ const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[]
 // define the layers statically
 const baseLayers = {
   dem: {
-    code: 'chile_mapper:dem_aoi_10m_tiled',
-    foo: true
+    wms_name: 'chile_mapper:dem_aoi_10m_tiled'
   },
   burn_avoidance: {
-    code: 'chile_mapper:burn_avoidance',
-    foo: false
+    wms_name: 'chile_mapper:burn_avoidance'
   },
+  ignition_susceptibility: {
+    wms_name: 'chile_mapper:ignition_susceptibility'
+  },
+  water_yield: {
+    wms_name: 'chile_mapper:baseline_hruresults'
+  },
+  rcp_45_water_yield: {
+    wms_name: 'chile_mapper:rcp_45_hruresults'
+  },
+  rcp_85_water_yield: {
+    wms_name: 'chile_mapper:rcp_85_hruresults'
+  },
+  habitat_map: {
+    wms_name: 'chile_mapper:habitat_landuse_map'
+  },
+  soil_loss: {
+    wms_name: 'chile_mapper:soil_loss'
+  },
+  nitrogen: {
+    wms_name: 'chile_mapper:organic_nitrogen_yield'
+  },
+  phosphorus: {
+    wms_name: 'chile_mapper:organic_phosphorus_yield'
+  },
+  soil_water: {
+    wms_name: 'chile_mapper:average_daily_soil_water_content'
+  },
+  mean_percolation: {
+    wms_name: 'chile_mapper:mean_percolation'
+  }
 }
 
-// editable json file just contains localised content
-// although could get rid of json file and put in the layers data structure
-// it's nice to have all user-facing internalised content separate from code
-const content2 = {
-  baseLayers: {
-    dem: {
-      en: 'DEM (Digital Elevation Model)',
-      es: 'DEM (Modelo de elevación digital)',
-    },
-    burn_avoidance: {
-      en: 'Burn Avoidance',
-      es: 'Prevención de Incendio',
-    },
+const overlayLayers = {
+  hillshade: {
+    wms_name: 'chile_mapper:dem_aoi_10m_hillshade',
+    display_legend: false
   },
-  footerContent: {
-    en: 'Hello, I\'m in English',
-    es: 'Hola, estoy en español',
+  roads: {
+    wms_name: 'chile_mapper:roads',
+    display_legend: false
+  },
+  subbasins: {
+    wms_name: 'chile_mapper:subbasins',
+    display_legend: false
+  },
+  rivers: {
+    wms_name: 'chile_mapper:baseline_rchresults',
+    display_legend: true
   }
 }

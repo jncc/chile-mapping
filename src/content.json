@@ -1,106 +1,71 @@
 {
-    "base_layers": [
-        {
-            "id": "dem",
-            "layers": "chile_mapper:dem_aoi_10m_tiled",
+    "base_layers": {
+        "dem": {
             "en": "DEM (Digital Elevation Model)",
             "es": "spanish DEM"
         },
-        {
-            "id": "burn_avoidance",
-            "layers": "chile_mapper:burn_avoidance",
+        "burn_avoidance": {
             "en": "Burn Avoidance",
             "es": "Prevención de Incendio"
         },
-        {
-            "id": "ignition_susceptibility",
-            "layers": "chile_mapper:ignition_susceptibility",
+        "ignition_susceptibility": {
             "en": "Ignition Susceptibility",
             "es": "Susceptibilidad del Hábitat a Ignición"
         },
-        {
-            "id": "water_yield",
-            "layers": "chile_mapper:baseline_hruresults",
+        "water_yield": {
             "en": "Annual Mean Water Yield",
             "es": "Producción promedio anual de agua"
         },
-        {
-            "id": "rcp_45_water_yield",
-            "layers": "chile_mapper:rcp_45_hruresults",
+        "rcp_45_water_yield": {
             "en": "RCP4.5 Annual Mean Water Yield",
             "es": "RCP4.5 Producción promedio anual de agua"
         },
-        {
-            "id": "rcp_85_water_yield",
-            "layers": "chile_mapper:rcp_85_hruresults",
+        "rcp_85_water_yield": {
             "en": "RCP8.5 Annual Mean Water Yield",
             "es": "RCP8.5 Producción promedio anual de agua"
         },
-        {
-            "id": "habitat_map",
-            "layers": "chile_mapper:habitat_landuse_map",
+        "habitat_map": {
             "en": "Habitat Map with Landuse for Vineyards",
             "es": "spanish habitat map"
         },
-        {
-            "id": "soil_loss",
+        "soil_loss": {
             "layers": "chile_mapper:soil_loss",
             "en": "Soil Loss",
             "es": "Perdida de suelo"
         },
-        {
-            "id": "nitrogen",
-            "layers": "chile_mapper:organic_nitrogen_yield",
+        "nitrogen": {
             "en": "Organic Nitrogen Yield",
             "es": "spanish organic nitrogen yield"
         },
-        {
-            "id": "phosphorus",
-            "layers": "chile_mapper:organic_phosphorus_yield",
+        "phosphorus": {
             "en": "Organic Phosphorus Yield",
             "es": "spanish organic phosphorus yield"
         },
-        {
-            "id": "soil_water",
-            "layers": "chile_mapper:average_daily_soil_water_content",
+        "soil_water": {
             "en": "Average Daily Soil Water Content",
             "es": "spanish soil water content"
         },
-        {
-            "id": "mean_percolation",
-            "layers": "chile_mapper:mean_percolation",
+        "mean_percolation": {
             "en": "Mean Percolation",
             "es": "spanish mean percolation"
         }
-    ],
-    "overlay_layers": [
-        {
-            "id": "hillshade",
-            "layers": "chile_mapper:dem_aoi_10m_hillshade",
-            "display_legend": false,
+    },
+    "overlay_layers": {
+        "hillshade": {
             "en": "Hillshade",
             "es": "spanish hillshade"
         },
-        {
-            "id": "roads",
-            "layers": "chile_mapper:roads",
-            "display_legend": false,
+        "roads": {
             "en": "Roads",
             "es": "spanish roads"
         },
-        {
-            "id": "subbasins",
-            "layers": "chile_mapper:subbasins",
-            "display_legend": false,
+        "subbasins": {
             "en": "Sub-basins",
             "es": "Sub-cuenca"
         },
-        {
-            "id": "rivers",
-            "layers": "chile_mapper:baseline_rchresults",
-            "display_legend": true,
+        "rivers": {
             "en": "Mean Daily Streamflow",
             "es": "spanish rivers"
         }
-    ]
+    }
 }
