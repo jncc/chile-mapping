@@ -112,4 +112,45 @@ export function createMap(container: HTMLElement, config: Config) {
     position: 'topleft'
   }).addTo(map)
 
+  // example of looping through statically-known layers (check out the type of `layer`!)
+  for (let layer of keys(baseLayers)) {
+    let code = baseLayers[layer].code
+    let foo = baseLayers[layer].foo
+    let displayName = content2.baseLayers[layer][config.language]
+    console.log(code + ' - ' + displayName + ' - ' + foo)
+  }
+}
+
+const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[]
+
+// define the layers statically
+const baseLayers = {
+  dem: {
+    code: 'chile_mapper:dem_aoi_10m_tiled',
+    foo: true
+  },
+  burn_avoidance: {
+    code: 'chile_mapper:burn_avoidance',
+    foo: false
+  },
+}
+
+// editable json file just contains localised content
+// although could get rid of json file and put in the layers data structure
+// it's nice to have all user-facing internalised content separate from code
+const content2 = {
+  baseLayers: {
+    dem: {
+      en: 'DEM (Digital Elevation Model)',
+      es: 'DEM (Modelo de elevación digital)',
+    },
+    burn_avoidance: {
+      en: 'Burn Avoidance',
+      es: 'Prevención de Incendio',
+    },
+  },
+  footerContent: {
+    en: 'Hello, I\'m in English',
+    es: 'Hola, estoy en español',
+  }
 }
