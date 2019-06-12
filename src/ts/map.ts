@@ -84,20 +84,20 @@ export function createMap(container: HTMLElement, config: Config) {
   map.on('overlayadd', function(e) {
     let event = e as L.LayersControlEvent
     let layer = event.layer as L.TileLayer.WMS
-    for (let overlay of keys(overlayLayers)) {
-      if (overlayLayers[overlay].wms_name == layer.wmsParams.layers && overlayLayers[overlay].display_legend) {
-        let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
-          + layer.wmsParams.layers
+    let layerNeedingALegend = Object.values(overlayLayers)
+      .find(l => l.wms_name === layer.wmsParams.layers && l.display_legend)
+      
+    if (layerNeedingALegend) {
+      let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
+      + layer.wmsParams.layers
 
-        overlayLegend.onAdd = function () {
-            let div = L.DomUtil.create('div', 'info legend')
+      overlayLegend.onAdd = function () {
+        let div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += '<img src="' + legendUrl + '" />'
+        return div
+      }
 
-            div.innerHTML += '<img src="' + legendUrl + '" />'
-            return div
-        }
-
-        overlayLegend.addTo(map)
-        }
+      overlayLegend.addTo(map)
     }
   })
 
