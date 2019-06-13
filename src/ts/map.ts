@@ -14,46 +14,46 @@ export function createMap(container: HTMLElement, config: Config) {
 
   // add base maps
   let baseMaps = {}
-  content.base_layers.forEach(baseLayer => {
+  for (let baseLayer of keys(baseLayers)) {
     let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
-      layers: baseLayer.layers,
+      layers: baseLayers[baseLayer].wms_name,
       transparent: true,
       format: 'image/png',
       opacity: 0.5
     })
 
     // start with this as default
-    if (baseLayer.id == 'dem') {
+    if (baseLayer == 'dem') {
       layer.addTo(map)
     }
 
-    Object.assign(baseMaps, {[baseLayer[config.language]]: layer})
-  })
+    Object.assign(baseMaps, {[content.base_layers[baseLayer][config.language]]: layer})
+  }
 
   // add overlays
   let overlayMaps = {}
-  content.overlay_layers.forEach(overlay => {
+  for (let overlay of keys(overlayLayers)) {
     let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
-      layers: overlay.layers,
+      layers: overlayLayers[overlay].wms_name,
       transparent: true,
       format: 'image/png',
       opacity: 0.5
     })
 
     // start with this as default
-    if (overlay.id == 'hillshade') {
+    if (overlay == 'hillshade') {
       layer.addTo(map)
     }
 
-    Object.assign(overlayMaps, {[overlay[config.language]]: layer})
-  })
+    Object.assign(overlayMaps, {[content.overlay_layers[overlay][config.language]]: layer})
+  }
   
   let legend = new L.Control({position: 'topright'})
   let overlayLegend = new L.Control({position: 'topright'})
 
   // add default legend
-  let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER=' +
-    content.base_layers.find(x => x.id == 'dem')!.layers
+  let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
+    + baseLayers.dem.wms_name
   legend.onAdd = function () {
     let div = L.DomUtil.create('div', 'info legend')
 
@@ -84,15 +84,17 @@ export function createMap(container: HTMLElement, config: Config) {
   map.on('overlayadd', function(e) {
     let event = e as L.LayersControlEvent
     let layer = event.layer as L.TileLayer.WMS
-    if (content.overlay_layers.find(x => x.layers == layer.wmsParams.layers)!.display_legend) {
+    let layerNeedingALegend = Object.values(overlayLayers)
+      .find(l => l.wms_name === layer.wmsParams.layers && l.display_legend)
+      
+    if (layerNeedingALegend) {
       let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
-        + layer.wmsParams.layers
+      + layer.wmsParams.layers
 
       overlayLegend.onAdd = function () {
-          let div = L.DomUtil.create('div', 'info legend')
-
-          div.innerHTML += '<img src="' + legendUrl + '" />'
-          return div
+        let div = L.DomUtil.create('div', 'info legend')
+        div.innerHTML += '<img src="' + legendUrl + '" />'
+        return div
       }
 
       overlayLegend.addTo(map)
@@ -102,8 +104,10 @@ export function createMap(container: HTMLElement, config: Config) {
   map.on('overlayremove', function(e) {
     let event = e as L.LayersControlEvent
     let layer = event.layer as L.TileLayer.WMS
-    if (content.overlay_layers.find(x => x.layers == layer.wmsParams.layers)!.display_legend) {
-      map.removeControl(overlayLegend)
+    for (let overlay of keys(overlayLayers)) {
+      if (overlayLayers[overlay].wms_name == layer.wmsParams.layers && overlayLayers[overlay].display_legend) {
+        map.removeControl(overlayLegend)
+      }
     }
   })
 
@@ -111,5 +115,65 @@ export function createMap(container: HTMLElement, config: Config) {
     collapsed: false,
     position: 'topleft'
   }).addTo(map)
+}
 
+const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[]
+
+// define the layers statically
+const baseLayers = {
+  dem: {
+    wms_name: 'chile_mapper:dem_aoi_10m_tiled'
+  },
+  burn_avoidance: {
+    wms_name: 'chile_mapper:burn_avoidance'
+  },
+  ignition_susceptibility: {
+    wms_name: 'chile_mapper:ignition_susceptibility'
+  },
+  water_yield: {
+    wms_name: 'chile_mapper:baseline_hruresults'
+  },
+  rcp_45_water_yield: {
+    wms_name: 'chile_mapper:rcp_45_hruresults'
+  },
+  rcp_85_water_yield: {
+    wms_name: 'chile_mapper:rcp_85_hruresults'
+  },
+  habitat_map: {
+    wms_name: 'chile_mapper:habitat_landuse_map'
+  },
+  soil_loss: {
+    wms_name: 'chile_mapper:soil_loss'
+  },
+  nitrogen: {
+    wms_name: 'chile_mapper:organic_nitrogen_yield'
+  },
+  phosphorus: {
+    wms_name: 'chile_mapper:organic_phosphorus_yield'
+  },
+  soil_water: {
+    wms_name: 'chile_mapper:average_daily_soil_water_content'
+  },
+  mean_percolation: {
+    wms_name: 'chile_mapper:mean_percolation'
+  }
+}
+
+const overlayLayers = {
+  hillshade: {
+    wms_name: 'chile_mapper:dem_aoi_10m_hillshade',
+    display_legend: false
+  },
+  roads: {
+    wms_name: 'chile_mapper:roads',
+    display_legend: false
+  },
+  subbasins: {
+    wms_name: 'chile_mapper:subbasins',
+    display_legend: false
+  },
+  rivers: {
+    wms_name: 'chile_mapper:baseline_rchresults',
+    display_legend: true
+  }
 }

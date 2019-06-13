@@ -4,6 +4,9 @@ import '../styles.less'
 import 'leaflet/dist/leaflet.css'
 
 // polyfills
+import 'ts-polyfill/lib/es2016-array-include'
+import 'ts-polyfill/lib/es2017-object'
+import 'ts-polyfill/lib/es2017-string'
 import 'url-search-params-polyfill'
 
 import { getConfig } from './config'
