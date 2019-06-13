@@ -47,52 +47,57 @@ export function createMap(container: HTMLElement, config: Config) {
 
     Object.assign(overlayMaps, {[content.overlay_layers[overlay][config.language]]: layer})
   }
-  
-  let legend = new L.Control({position: 'topright'})
-  let overlayLegend = new L.Control({position: 'topright'})
 
-  // add default legend
-  let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
-    + baseLayers.dem.wms_name
-  legend.onAdd = function () {
-    let div = L.DomUtil.create('div', 'info legend')
-
-    div.innerHTML += '<img src="' + legendUrl + '" />'
+  let info = new L.Control()
+  info.onAdd = function (map) : HTMLElement {
+    let div = L.DomUtil.create('div', 'info')
     return div
   }
-  legend.addTo(map)
+  info.addTo(map)
+  updateinfo('dem')
+
+  //todo: get this type automatically somehow
+  function updateinfo (baseLayer : 'dem' | 'burn_avoidance' | 'ignition_susceptibility'
+  | 'water_yield' | 'rcp_45_water_yield' | 'rcp_85_water_yield' | 'habitat_map' | 'soil_loss'
+  | 'nitrogen' | 'phosphorus' | 'soil_water' | 'mean_percolation') {
+    let infoElement: Element = document.getElementsByClassName('info')[0]
+    let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?'
+      + 'REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&LAYER='
+      + baseLayers[baseLayer].wms_name
+
+    infoElement.innerHTML = '<h4>' + content.base_layers[baseLayer][config.language] + '</h4>'
+    infoElement.innerHTML += '<img src="' + legendUrl + '" />'
+    // tslint:disable-next-line:max-line-length
+    infoElement.innerHTML += '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+  }
+  
+  let overlayLegend = new L.Control({position: 'topright'})
 
   // change legend depending on base layer
   map.on('baselayerchange', (e) => {
     let event = e as L.LayersControlEvent
     let layer = event.layer as L.TileLayer.WMS
-    let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
-      + layer.options.layers
+    let baseLayer = keys(baseLayers)
+      .find(l => baseLayers[l].wms_name === layer.wmsParams.layers)
 
-    map.removeControl(legend)
-    legend.onAdd = function () {
-        let div = L.DomUtil.create('div', 'info legend')
-
-        div.innerHTML += '<img src="' + legendUrl + '" />'
-        return div
+    if (baseLayer) {
+      updateinfo(baseLayer)
     }
-
-    legend.addTo(map)
   })
 
   // the rivers overlay also needs a legend
   map.on('overlayadd', function(e) {
     let event = e as L.LayersControlEvent
     let layer = event.layer as L.TileLayer.WMS
-    let layerNeedingALegend = Object.values(overlayLayers)
+    let requiresLegend = Object.values(overlayLayers)
       .find(l => l.wms_name === layer.wmsParams.layers && l.display_legend)
       
-    if (layerNeedingALegend) {
+    if (requiresLegend) {
       let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
       + layer.wmsParams.layers
 
       overlayLegend.onAdd = function () {
-        let div = L.DomUtil.create('div', 'info legend')
+        let div = L.DomUtil.create('div', 'info')
         div.innerHTML += '<img src="' + legendUrl + '" />'
         return div
       }
@@ -104,10 +109,11 @@ export function createMap(container: HTMLElement, config: Config) {
   map.on('overlayremove', function(e) {
     let event = e as L.LayersControlEvent
     let layer = event.layer as L.TileLayer.WMS
-    for (let overlay of keys(overlayLayers)) {
-      if (overlayLayers[overlay].wms_name == layer.wmsParams.layers && overlayLayers[overlay].display_legend) {
-        map.removeControl(overlayLegend)
-      }
+    let requiresLegendRemoval = Object.values(overlayLayers)
+      .find(l => l.wms_name === layer.wmsParams.layers && l.display_legend)
+
+    if (requiresLegendRemoval) {
+      map.removeControl(overlayLegend)
     }
   })
 
