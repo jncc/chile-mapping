@@ -6,7 +6,7 @@ import * as layers from './layers'
 import { keys } from './layers'
 import * as React from 'react'
 import { render } from 'react-dom'
-import Sidebar from './Sidebar'
+import Sidebar from './sidebar'
 
 let overlayMaps = {} as any
 let baseMaps = {} as any
