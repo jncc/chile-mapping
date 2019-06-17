@@ -69,7 +69,7 @@ export function createMap(container: HTMLElement, config: Config) {
 
 }
 
-export function changeOverlay(layer : 'hillshade' | 'roads' | 'subbasins' | 'rivers', checked : boolean) {
+export function changeOverlay(layer : keyof typeof layers.overlayLayers, checked : boolean) {
   if (checked) {
     overlayMaps[layer].addTo(map)
 
@@ -85,9 +85,7 @@ export function changeOverlay(layer : 'hillshade' | 'roads' | 'subbasins' | 'riv
   }
 }
 
-export function changeBaselayer(layer : 'dem' | 'burn_avoidance' | 'ignition_susceptibility'
-| 'water_yield' | 'rcp_45_water_yield' | 'rcp_85_water_yield' | 'habitat_map' | 'soil_loss'
-| 'nitrogen' | 'phosphorus' | 'soil_water' | 'mean_percolation') {
+export function changeBaselayer(layer : keyof typeof layers.baseLayers) {
 
   for (let baseLayer of keys(baseMaps)) {
     map.removeLayer(baseMaps[baseLayer])

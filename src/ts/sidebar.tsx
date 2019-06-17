@@ -6,9 +6,7 @@ import * as map from './map'
 
 export default class Sidebar extends React.Component {
   state = {
-    baseLayer: 'dem' as 'dem' | 'burn_avoidance' | 'ignition_susceptibility'
-    | 'water_yield' | 'rcp_45_water_yield' | 'rcp_85_water_yield' | 'habitat_map' | 'soil_loss'
-    | 'nitrogen' | 'phosphorus' | 'soil_water' | 'mean_percolation',
+    baseLayer: 'dem' as keyof typeof layers.baseLayers,
     overlays: {
       'hillshade': true
     }
@@ -19,9 +17,7 @@ export default class Sidebar extends React.Component {
       baseLayer: event.target.value,
       overlays: this.state.overlays
     })
-    map.changeBaselayer(event.target.value as 'dem' | 'burn_avoidance' | 'ignition_susceptibility'
-    | 'water_yield' | 'rcp_45_water_yield' | 'rcp_85_water_yield' | 'habitat_map' | 'soil_loss'
-    | 'nitrogen' | 'phosphorus' | 'soil_water' | 'mean_percolation')
+    map.changeBaselayer(event.target.value as keyof typeof layers.baseLayers)
   }
 
   changeOverlay = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +28,7 @@ export default class Sidebar extends React.Component {
       baseLayer: this.state.baseLayer,
       overlays: updatedOverlays
     })
-    map.changeOverlay(event.target.value as 'hillshade' | 'roads' | 'subbasins' | 'rivers', event.target.checked)
+    map.changeOverlay(event.target.value as keyof typeof layers.overlayLayers, event.target.checked)
   }
 
   render() {
@@ -69,15 +65,11 @@ export default class Sidebar extends React.Component {
         <div className="legend">
           <img src={'https://ows.jncc.gov.uk/chile_mapper/wms?'
             + 'REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&LAYER='
-            + layers.baseLayers[this.state.baseLayer as 'dem' | 'burn_avoidance' | 'ignition_susceptibility'
-            | 'water_yield' | 'rcp_45_water_yield' | 'rcp_85_water_yield' | 'habitat_map' | 'soil_loss'
-            | 'nitrogen' | 'phosphorus' | 'soil_water' | 'mean_percolation'].wms_name} />
+            + layers.baseLayers[this.state.baseLayer as keyof typeof layers.baseLayers].wms_name} />
         </div>
         <div className="info">
           <p>
-            {content.base_layers[this.state.baseLayer as 'dem' | 'burn_avoidance' | 'ignition_susceptibility'
-          | 'water_yield' | 'rcp_45_water_yield' | 'rcp_85_water_yield' | 'habitat_map' | 'soil_loss'
-          | 'nitrogen' | 'phosphorus' | 'soil_water' | 'mean_percolation']
+            {content.base_layers[this.state.baseLayer as keyof typeof layers.baseLayers]
             .description[getConfig(this.state.baseLayer).language]}
           </p>
         </div>
