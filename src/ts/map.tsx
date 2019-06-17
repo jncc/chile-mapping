@@ -8,17 +8,20 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import Sidebar from './Sidebar'
 
+let overlayMaps = {} as any
+let baseMaps = {} as any
+let map: L.Map
+let streamflowLegend: L.Control
 export function createMap(container: HTMLElement, config: Config) {
   
-  let map = L.map(container, {zoomControl: false}).setView([-34.696461172723474, -71.09802246093751], 9)
+  map = L.map(container, {zoomControl: false}).setView([-34.696461172723474, -71.09802246093751], 9)
   new L.Control.Zoom({ position: 'bottomleft' }).addTo(map)
   
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map)
 
-  // add base maps
-  let baseMaps = {}
+  // setup base maps
   for (let baseLayer of keys(layers.baseLayers)) {
     let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
       layers: layers.baseLayers[baseLayer].wms_name,
@@ -26,34 +29,24 @@ export function createMap(container: HTMLElement, config: Config) {
       format: 'image/png',
       opacity: 0.5
     })
-
-    // start with this as default
-    if (baseLayer == 'dem') {
-      layer.addTo(map)
-    }
-
-    Object.assign(baseMaps, {[content.base_layers[baseLayer]['title'][config.language]]: layer})
+    Object.assign(baseMaps, {[baseLayer]: layer})
   }
+  changeBaselayer('dem') // default base layer
 
-  // add overlays
-  let overlayMaps = {}
+  // setup overlays  
   for (let overlay of keys(layers.overlayLayers)) {
     let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
       layers: layers.overlayLayers[overlay].wms_name,
       transparent: true,
       format: 'image/png',
-      opacity: 0.5
+      opacity: 1
     })
-
-    // start with this as default
-    if (overlay == 'hillshade') {
-      layer.addTo(map)
-    }
-
-    Object.assign(overlayMaps, {[content.overlay_layers[overlay]['title'][config.language]]: layer})
+    Object.assign(overlayMaps, {[overlay]: layer})
   }
+  changeOverlay('hillshade', true) // default overlay
 
-  let sidebarControl = new L.Control()
+  // set up sidebar using react component
+  let sidebarControl = new L.Control({position: 'topleft'})
   sidebarControl.onAdd = function (map) : HTMLElement {
     let sidebar: HTMLElement = L.DomUtil.create('div', 'sidebar')
 
@@ -62,55 +55,43 @@ export function createMap(container: HTMLElement, config: Config) {
   }
   sidebarControl.addTo(map)
   
-  let overlayLegend = new L.Control({position: 'topright'})
+  // set up a separate legend for the streamflow overlay
+  streamflowLegend = new L.Control({position: 'topright'})
+  let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?'
+    + 'REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&LAYER='
+    + layers.overlayLayers.rivers.wms_name
+  streamflowLegend.onAdd = function () {
+    let div = L.DomUtil.create('div', 'sidebar')
+    div.innerHTML += '<h4>'+content.overlay_layers.rivers.title[config.language]+'</h4>'
+    div.innerHTML += '<img src="' + legendUrl + '" />'
+    return div
+  }
 
-  // change legend depending on base layer
-  // map.on('baselayerchange', (e) => {
-  //   let event = e as L.LayersControlEvent
-  //   let layer = event.layer as L.TileLayer.WMS
-  //   let baseLayer = keys(baseLayers)
-  //     .find(l => baseLayers[l].wms_name === layer.wmsParams.layers)
+}
 
-  //   if (baseLayer) {
-  //     updateinfo(baseLayer)
-  //   }
-  // })
+export function changeOverlay(layer : 'hillshade' | 'roads' | 'subbasins' | 'rivers', checked : boolean) {
+  if (checked) {
+    overlayMaps[layer].addTo(map)
 
-  // the rivers overlay also needs a legend
-  // map.on('overlayadd', function(e) {
-  //   let event = e as L.LayersControlEvent
-  //   let layer = event.layer as L.TileLayer.WMS
-  //   let requiresLegend = Object.values(overlayLayers)
-  //     .find(l => l.wms_name === layer.wmsParams.layers && l.display_legend)
-      
-  //   if (requiresLegend) {
-  //     let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?REQUEST=GetLegendGraphic&FORMAT=image/png&LAYER='
-  //     + layer.wmsParams.layers
+    if (layer === 'rivers') {
+      streamflowLegend.addTo(map)
+    }
+  } else {
+    map.removeLayer(overlayMaps[layer])
 
-  //     overlayLegend.onAdd = function () {
-  //       let div = L.DomUtil.create('div', 'sidebar')
-  //       div.innerHTML += '<img src="' + legendUrl + '" />'
-  //       return div
-  //     }
+    if (layer === 'rivers') {
+      streamflowLegend.remove()
+    }
+  }
+}
 
-  //     overlayLegend.addTo(map)
-  //   }
-  // })
+export function changeBaselayer(layer : 'dem' | 'burn_avoidance' | 'ignition_susceptibility'
+| 'water_yield' | 'rcp_45_water_yield' | 'rcp_85_water_yield' | 'habitat_map' | 'soil_loss'
+| 'nitrogen' | 'phosphorus' | 'soil_water' | 'mean_percolation') {
 
-  // map.on('overlayremove', function(e) {
-  //   let event = e as L.LayersControlEvent
-  //   let layer = event.layer as L.TileLayer.WMS
-  //   let requiresLegendRemoval = Object.values(overlayLayers)
-  //     .find(l => l.wms_name === layer.wmsParams.layers && l.display_legend)
+  for (let baseLayer of keys(baseMaps)) {
+    map.removeLayer(baseMaps[baseLayer])
+  }
 
-  //   if (requiresLegendRemoval) {
-  //     map.removeControl(overlayLegend)
-  //   }
-  // })
-
-  L.control.layers(baseMaps, overlayMaps, {
-    collapsed: false,
-    position: 'topleft'
-  }).addTo(map)
-
+  baseMaps[layer].addTo(map)
 }
