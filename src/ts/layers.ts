@@ -10,13 +10,13 @@ export const baseLayers = {
     wms_name: 'chile_mapper:ignition_susceptibility'
   },
   water_yield: {
-    wms_name: 'chile_mapper:baseline_hruresults'
+    wms_name: 'chile_mapper:water_yield'
   },
   rcp_45_water_yield: {
-    wms_name: 'chile_mapper:rcp_45_hruresults'
+    wms_name: 'chile_mapper:rcp_45_water_yield'
   },
   rcp_85_water_yield: {
-    wms_name: 'chile_mapper:rcp_85_hruresults'
+    wms_name: 'chile_mapper:rcp_85_water_yield'
   },
   habitat_map: {
     wms_name: 'chile_mapper:habitat_landuse_map'

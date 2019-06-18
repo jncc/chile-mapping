@@ -27,11 +27,11 @@ export function createMap(container: HTMLElement, config: Config) {
       layers: layers.baseLayers[baseLayer].wms_name,
       transparent: true,
       format: 'image/png',
-      opacity: 0.5
+      opacity: 0.6
     })
     Object.assign(baseMaps, {[baseLayer]: layer})
   }
-  changeBaselayer('dem') // default base layer
+  updateBaselayer('dem') // default base layer
 
   // setup overlays  
   for (let overlay of keys(layers.overlayLayers)) {
@@ -39,19 +39,20 @@ export function createMap(container: HTMLElement, config: Config) {
       layers: layers.overlayLayers[overlay].wms_name,
       transparent: true,
       format: 'image/png',
-      opacity: 1
+      opacity: 0.9
     })
     Object.assign(overlayMaps, {[overlay]: layer})
   }
-  changeOverlay('hillshade', true) // default overlay
+  updateOverlay('hillshade', true) // default overlay
 
   // set up sidebar using react component
   let sidebarControl = new L.Control({position: 'topleft'})
   sidebarControl.onAdd = function (map) : HTMLElement {
-    let sidebar: HTMLElement = L.DomUtil.create('div', 'sidebar')
-
-    render(<Sidebar />, sidebar)
-    return sidebar
+    let div: HTMLElement = L.DomUtil.create('div', 'sidebar')
+    render(<Sidebar />, div)
+    L.DomEvent.disableClickPropagation(div)
+    L.DomEvent.disableScrollPropagation(div)
+    return div
   }
   sidebarControl.addTo(map)
   
@@ -62,14 +63,20 @@ export function createMap(container: HTMLElement, config: Config) {
     + layers.overlayLayers.rivers.wms_name
   streamflowLegend.onAdd = function () {
     let div = L.DomUtil.create('div', 'sidebar')
-    div.innerHTML += '<h4>'+content.overlay_layers.rivers.title[config.language]+'</h4>'
-    div.innerHTML += '<img src="' + legendUrl + '" />'
+    div.innerHTML += '<p>'+content.overlay_layers.rivers.title[config.language]+'</p>'
+    div.innerHTML += '<img class="overlay-legend" src="' + legendUrl + '" />'
+    L.DomEvent.disableClickPropagation(div)
+    L.DomEvent.disableScrollPropagation(div)
     return div
   }
 
 }
 
-export function changeOverlay(layer : keyof typeof layers.overlayLayers, checked : boolean) {
+export function refreshOverlay(layer : keyof typeof layers.overlayLayers) {
+  overlayMaps[layer].bringToFront()
+}
+
+export function updateOverlay(layer : keyof typeof layers.overlayLayers, checked : boolean) {
   if (checked) {
     overlayMaps[layer].addTo(map)
 
@@ -85,7 +92,7 @@ export function changeOverlay(layer : keyof typeof layers.overlayLayers, checked
   }
 }
 
-export function changeBaselayer(layer : keyof typeof layers.baseLayers) {
+export function updateBaselayer(layer : keyof typeof layers.baseLayers) {
 
   for (let baseLayer of keys(baseMaps)) {
     map.removeLayer(baseMaps[baseLayer])

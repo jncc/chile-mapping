@@ -9,15 +9,21 @@ export default class Sidebar extends React.Component {
     baseLayer: 'dem' as keyof typeof layers.baseLayers,
     overlays: {
       'hillshade': true
-    }
-  } as any
+    } as any
+  } 
 
   changeBaseLayer = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({
       baseLayer: event.target.value,
       overlays: this.state.overlays
     })
-    map.changeBaselayer(event.target.value as keyof typeof layers.baseLayers)
+    map.updateBaselayer(event.target.value as keyof typeof layers.baseLayers)
+
+    for (let overlay of layers.keys(this.state.overlays)) {
+      if (this.state.overlays[overlay]){
+        map.refreshOverlay(overlay as keyof typeof layers.overlayLayers)
+      }
+    }
   }
 
   changeOverlay = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +34,7 @@ export default class Sidebar extends React.Component {
       baseLayer: this.state.baseLayer,
       overlays: updatedOverlays
     })
-    map.changeOverlay(event.target.value as keyof typeof layers.overlayLayers, event.target.checked)
+    map.updateOverlay(event.target.value as keyof typeof layers.overlayLayers, event.target.checked)
   }
 
   render() {
@@ -44,23 +50,26 @@ export default class Sidebar extends React.Component {
     let checkboxOptions = []
     for (let layer of layers.keys(layers.overlayLayers)) {
       checkboxOptions.push(
-        <label>
-          <div>
-            <input type="checkbox" onChange={this.changeOverlay} value={layer} checked={this.state.overlays[layer]}/>
-            <span>{content.overlay_layers[layer].title[getConfig(layer).language]}</span>
+        <div key={layer} className="checkbox">
+          <div className="form-inline">
+            <label className="form-check-label">
+              <input className="form-check-input" type="checkbox"
+                onChange={this.changeOverlay} value={layer} checked={this.state.overlays[layer]}/>
+              {content.overlay_layers[layer].title[getConfig(layer).language]}
+            </label>
           </div>
-        </label>
+        </div>
       )
     }
 
     return (
       <div>
         <div className="layers">
-          <h4>Overlays</h4>
           {checkboxOptions}
-          <br />
-          <h4>Base layer</h4>
-          <select id="baselayer-select" onChange={this.changeBaseLayer}>{dropdownOptions}</select>
+          <hr />
+          <select className="form-control" onChange={this.changeBaseLayer}>
+            {dropdownOptions}
+          </select>
         </div>
         <div className="legend">
           <img src={'https://ows.jncc.gov.uk/chile_mapper/wms?'
