@@ -27,7 +27,8 @@ export function createMap(container: HTMLElement, config: Config) {
       layers: layers.baseLayers[baseLayer].wms_name,
       transparent: true,
       format: 'image/png',
-      opacity: 0.6
+      opacity: 0.6,
+      attribution: content.base_layers[baseLayer].attribution[config.language]
     })
     Object.assign(baseMaps, {[baseLayer]: layer})
   }
@@ -39,7 +40,8 @@ export function createMap(container: HTMLElement, config: Config) {
       layers: layers.overlayLayers[overlay].wms_name,
       transparent: true,
       format: 'image/png',
-      opacity: 0.9
+      opacity: 0.9,
+      attribution: content.overlay_layers[overlay].attribution[config.language]
     })
     Object.assign(overlayMaps, {[overlay]: layer})
   }
@@ -49,7 +51,7 @@ export function createMap(container: HTMLElement, config: Config) {
   let sidebarControl = new L.Control({position: 'topleft'})
   sidebarControl.onAdd = function (map) : HTMLElement {
     let div: HTMLElement = L.DomUtil.create('div', 'sidebar')
-    render(<Sidebar />, div)
+    render(<Sidebar/>, div)
     L.DomEvent.disableClickPropagation(div)
     L.DomEvent.disableScrollPropagation(div)
     return div

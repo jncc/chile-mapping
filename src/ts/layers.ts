@@ -57,4 +57,49 @@ export const overlayLayers = {
   }
 }
 
+export const legends = {
+  dem: {
+    1: {
+      colour: '#73F775',
+      label: '50-500m'
+    },
+    2: {
+      colour: '#BDFE8C',
+      label: '500-1000m'
+    },
+    3: {
+      colour: '#E7FE95',
+      label: '1000-1500m'
+    },
+    4: {
+      colour: '#FEF895',
+      label: '1500-2000m'
+    },
+    5: {
+      colour: '#FDDB7F',
+      label: '2000-2500m'
+    },
+    6: {
+      colour: '#F8C583',
+      label: '2500-3000m'
+    },
+    7: {
+      colour: '#EBBC99',
+      label: '3000-3500m'
+    },
+    8: {
+      colour: '#DFC6B3',
+      label: '3500-4000m'
+    },
+    9: {
+      colour: '#EBE2DB',
+      label: '4000-4500m'
+    },
+    10: {
+      colour: '#FAF9F8',
+      label: '4500-5000m'
+    }
+  }
+}
+
 export const keys = Object.keys as <T>(o: T) => (Extract<keyof T, string>)[]

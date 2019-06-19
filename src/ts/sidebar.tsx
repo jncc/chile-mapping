@@ -10,7 +10,7 @@ export default class Sidebar extends React.Component {
     overlays: {
       'hillshade': true
     } as any
-  } 
+  }
 
   changeBaseLayer = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({
@@ -18,7 +18,6 @@ export default class Sidebar extends React.Component {
       overlays: this.state.overlays
     })
     map.updateBaselayer(event.target.value as keyof typeof layers.baseLayers)
-
     for (let overlay of layers.keys(this.state.overlays)) {
       if (this.state.overlays[overlay]){
         map.refreshOverlay(overlay as keyof typeof layers.overlayLayers)
@@ -42,7 +41,7 @@ export default class Sidebar extends React.Component {
     for (let layer of layers.keys(layers.baseLayers)){
       dropdownOptions.push(
         <option key={layer} value={layer}>
-          {content.base_layers[layer].title[getConfig(layer).language]}
+          {content.base_layers[layer].title[getConfig(window.location.search).language]}
         </option>
       )
     }
@@ -55,10 +54,32 @@ export default class Sidebar extends React.Component {
             <label className="form-check-label">
               <input className="form-check-input" type="checkbox"
                 onChange={this.changeOverlay} value={layer} checked={this.state.overlays[layer]}/>
-              {content.overlay_layers[layer].title[getConfig(layer).language]}
+              {content.overlay_layers[layer].title[getConfig(window.location.search).language]}
             </label>
           </div>
         </div>
+      )
+    }
+
+    let legend = []
+    if (this.state.baseLayer === 'dem') {
+      for (let i = 1; i < layers.keys(layers.legends.dem).length+1; i++) {
+        let style: React.CSSProperties = {
+          backgroundColor: layers.legends.dem[i as keyof typeof layers.legends.dem].colour
+        }
+        legend.push(
+          <div key={'step'+i} className="legend-step">
+            <i style={style}></i>
+            {layers.legends.dem[i as keyof typeof layers.legends.dem].label}
+          </div>
+        )
+      }
+    } else {
+      legend.push(
+        <img src={'https://ows.jncc.gov.uk/chile_mapper/wms'
+          + '?REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&WIDTH=20'
+          + '&LEGEND_OPTIONS=dx:10;fontName:Arial;fontSize:12;fontStyle:normal&LAYER='
+          + layers.baseLayers[this.state.baseLayer as keyof typeof layers.baseLayers].wms_name} />
       )
     }
 
@@ -72,14 +93,12 @@ export default class Sidebar extends React.Component {
           </select>
         </div>
         <div className="legend">
-          <img src={'https://ows.jncc.gov.uk/chile_mapper/wms?'
-            + 'REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&LAYER='
-            + layers.baseLayers[this.state.baseLayer as keyof typeof layers.baseLayers].wms_name} />
+          {legend}
         </div>
         <div className="info">
           <p>
             {content.base_layers[this.state.baseLayer as keyof typeof layers.baseLayers]
-            .description[getConfig(this.state.baseLayer).language]}
+            .description[getConfig(window.location.search).language]}
           </p>
         </div>
       </div>
