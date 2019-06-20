@@ -15,7 +15,7 @@ let streamflowLegend: L.Control
 export function createMap(container: HTMLElement, config: Config) {
   
   map = L.map(container, {zoomControl: false}).setView([-34.696461172723474, -71.09802246093751], 9)
-  new L.Control.Zoom({ position: 'bottomleft' }).addTo(map)
+  new L.Control.Zoom({ position: 'bottomright' }).addTo(map)
   
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
