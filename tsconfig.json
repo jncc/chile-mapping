@@ -18,7 +18,7 @@
     "esModuleInterop": true // support lodash imports in parcel.js 
   },
   "include": [
-    "./src/**/**/*"
+    "./src/**/**/*", "src/js/leaflet-sidebar.min.js"
   ],
   "plugins": [
     {

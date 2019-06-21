@@ -2,6 +2,7 @@
 // styles
 import '../styles.less'
 import 'leaflet/dist/leaflet.css'
+import '../css/leaflet-sidebar.min.css'
 
 // polyfills
 import 'ts-polyfill/lib/es2016-array-include'

@@ -76,7 +76,7 @@ export default class Sidebar extends React.Component {
       }
     } else {
       legend.push(
-        <img src={'https://ows.jncc.gov.uk/chile_mapper/wms'
+        <img key={this.state.baseLayer+'-legend'} src={'https://ows.jncc.gov.uk/chile_mapper/wms'
           + '?REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&WIDTH=20'
           + '&LEGEND_OPTIONS=dx:10;fontName:Arial;fontSize:12;fontStyle:normal&LAYER='
           + layers.baseLayers[this.state.baseLayer as keyof typeof layers.baseLayers].wms_name} />
@@ -84,7 +84,7 @@ export default class Sidebar extends React.Component {
     }
 
     return (
-      <div>
+      <div className="sidebar-home">
         <div className="layers">
           {checkboxOptions}
           <hr />

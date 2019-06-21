@@ -7,6 +7,7 @@ import { keys } from './layers'
 import * as React from 'react'
 import { render } from 'react-dom'
 import Sidebar from './sidebar'
+import '../js/leaflet-sidebar.min.js'
 
 let overlayMaps = {} as any
 let baseMaps = {} as any
@@ -47,31 +48,63 @@ export function createMap(container: HTMLElement, config: Config) {
   }
   updateOverlay('hillshade', true) // default overlay
 
+  let sidebarControl = L.control.sidebar('sidebar', {position: 'left'})
   // set up sidebar using react component
-  let sidebarControl = new L.Control({position: 'topleft'})
-  sidebarControl.onAdd = function (map) : HTMLElement {
-    let div: HTMLElement = L.DomUtil.create('div', 'sidebar')
-    render(<Sidebar/>, div)
-    L.DomEvent.disableClickPropagation(div)
-    L.DomEvent.disableScrollPropagation(div)
-    return div
-  }
+  // let sidebarControl = new L.Control({position: 'topleft'})
+  // sidebarControl.onAdd = function (map) : HTMLElement {
+  //   let div: HTMLElement = L.DomUtil.create('div', 'sidebar')
+  //   render(<Sidebar/>, div)
+  //   L.DomEvent.disableClickPropagation(div)
+  //   L.DomEvent.disableScrollPropagation(div)
+  //   return div
+  // }
+  // sidebarControl.addTo(map)
   sidebarControl.addTo(map)
-  
+  let sidebarHome: HTMLElement | null = document.getElementById('home')
+  if (sidebarHome) {
+    render(<Sidebar/>, sidebarHome)
+  }
+
+  let sidebarAbout: HTMLElement | null = document.getElementById('about')
+  if (sidebarAbout) {
+    let about: HTMLElement | null = L.DomUtil.get('about')
+    if (about) {
+      let aboutContainer = L.DomUtil.create('div', 'sidebar-about')
+      aboutContainer.innerHTML += '<h2>'+content.info_panel.title[config.language]+'</h2>'
+      aboutContainer.innerHTML += '<p>'+content.info_panel.description[config.language]+'</p>'
+
+      let getStartedButton = L.DomUtil.create('button', 'btn btn-primary')
+      getStartedButton.innerHTML += 'Get started'
+      getStartedButton.addEventListener('click', function() {
+        let sidebarHome: HTMLElement | null = document.getElementsByClassName('fa fa-bars')[0] as HTMLElement
+        if (sidebarHome) {
+          sidebarHome.click()
+        }
+      })
+      aboutContainer.appendChild(getStartedButton)
+
+      about.appendChild(aboutContainer)
+    }
+  }
+
+  let aboutTab: HTMLElement | null = document.getElementById('about-tab')
+  if (aboutTab) {
+    aboutTab.click() // default
+  }
+
   // set up a separate legend for the streamflow overlay
   streamflowLegend = new L.Control({position: 'topright'})
   let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?'
     + 'REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&LAYER='
     + layers.overlayLayers.rivers.wms_name
   streamflowLegend.onAdd = function () {
-    let div = L.DomUtil.create('div', 'sidebar')
+    let div = L.DomUtil.create('div', 'overlay-legend')
     div.innerHTML += '<p>'+content.overlay_layers.rivers.title[config.language]+'</p>'
-    div.innerHTML += '<img class="overlay-legend" src="' + legendUrl + '" />'
+    div.innerHTML += '<img src="' + legendUrl + '" />'
     L.DomEvent.disableClickPropagation(div)
     L.DomEvent.disableScrollPropagation(div)
     return div
   }
-
 }
 
 export function refreshOverlay(layer : keyof typeof layers.overlayLayers) {
