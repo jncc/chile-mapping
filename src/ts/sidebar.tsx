@@ -52,7 +52,7 @@ export default class Sidebar extends React.Component {
         <div key={layer} className="checkbox">
           <div className="form-inline">
             <label className="form-check-label">
-              <input className="form-check-input" type="checkbox"
+              <input id={layer+'-checkbox'} className="form-check-input" type="checkbox"
                 onChange={this.changeOverlay} value={layer} checked={this.state.overlays[layer]}/>
               {content.overlay_layers[layer].title[getConfig(window.location.search).language]}
             </label>
@@ -88,7 +88,7 @@ export default class Sidebar extends React.Component {
         <div className="layers">
           {checkboxOptions}
           <hr />
-          <select className="form-control" onChange={this.changeBaseLayer}>
+          <select id="baselayer-select" className="form-control" onChange={this.changeBaseLayer}>
             {dropdownOptions}
           </select>
         </div>
