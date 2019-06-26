@@ -48,17 +48,8 @@ export function createMap(container: HTMLElement, config: Config) {
   }
   updateOverlay('hillshade', true) // default overlay
 
-  let sidebarControl = L.control.sidebar('sidebar', {position: 'left'})
   // set up sidebar using react component
-  // let sidebarControl = new L.Control({position: 'topleft'})
-  // sidebarControl.onAdd = function (map) : HTMLElement {
-  //   let div: HTMLElement = L.DomUtil.create('div', 'sidebar')
-  //   render(<Sidebar/>, div)
-  //   L.DomEvent.disableClickPropagation(div)
-  //   L.DomEvent.disableScrollPropagation(div)
-  //   return div
-  // }
-  // sidebarControl.addTo(map)
+  let sidebarControl = L.control.sidebar('sidebar', {position: 'left'})
   sidebarControl.addTo(map)
   let sidebarHome: HTMLElement | null = document.getElementById('home')
   if (sidebarHome) {
