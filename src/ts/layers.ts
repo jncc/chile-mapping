@@ -1,7 +1,7 @@
 // define the layers statically
 export const baseLayers = {
   dem: {
-    wms_name: 'chile_mapper:dem_aoi_10m_tiled'
+    wms_name: 'chile_mapper:dem_aoi_10m'
   },
   burn_avoidance: {
     wms_name: 'chile_mapper:burn_avoidance'
@@ -52,7 +52,7 @@ export const overlayLayers = {
     display_legend: false
   },
   rivers: {
-    wms_name: 'chile_mapper:baseline_rchresults',
+    wms_name: 'chile_mapper:mean_daily_streamflow',
     display_legend: true
   }
 }
