@@ -79,7 +79,10 @@ export default class Sidebar extends React.Component {
         <img key={this.state.baseLayer+'-legend'} src={'https://ows.jncc.gov.uk/chile_mapper/wms'
           + '?REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&WIDTH=20'
           + '&LEGEND_OPTIONS=dx:10;fontName:Arial;fontSize:12;fontStyle:normal&LAYER='
-          + layers.baseLayers[this.state.baseLayer as keyof typeof layers.baseLayers].wms_name} />
+          + layers.baseLayers[this.state.baseLayer as keyof typeof layers.baseLayers].wms_name
+          + '&STYLE='
+          + layers.baseLayers[this.state.baseLayer as keyof typeof layers.baseLayers]
+            .legend_style[getConfig(window.location.search).language]} />
       )
     }
 

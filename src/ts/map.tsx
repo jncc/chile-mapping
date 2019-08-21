@@ -88,6 +88,8 @@ export function createMap(container: HTMLElement, config: Config) {
   let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?'
     + 'REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&LAYER='
     + layers.overlayLayers.rivers.wms_name
+    + '&STYLE='
+    + layers.overlayLayers.rivers.legend_style[config.language]
   streamflowLegend.onAdd = function () {
     let div = L.DomUtil.create('div', 'overlay-legend')
     div.innerHTML += '<p>'+content.overlay_layers.rivers.title[config.language]+'</p>'

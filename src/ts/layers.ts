@@ -1,40 +1,88 @@
 // define the layers statically
 export const baseLayers = {
   dem: {
-    wms_name: 'chile_mapper:dem_aoi_10m'
+    wms_name: 'chile_mapper:dem_aoi_10m',
+    legend_style: {
+      en: null,
+      es: null
+    }
   },
   burn_avoidance: {
-    wms_name: 'chile_mapper:burn_avoidance'
+    wms_name: 'chile_mapper:burn_avoidance',
+    legend_style: {
+      en: 'burn_avoidance_en',
+      es: 'burn_avoidance_es'
+    }
   },
   ignition_susceptibility: {
-    wms_name: 'chile_mapper:ignition_susceptibility'
+    wms_name: 'chile_mapper:ignition_susceptibility',
+    legend_style: {
+      en: 'ignition_susceptibility_en',
+      es: 'ignition_susceptibility_es'
+    }
   },
   water_yield: {
-    wms_name: 'chile_mapper:water_yield'
+    wms_name: 'chile_mapper:water_yield',
+    legend_style: {
+      en: 'water_yield_en',
+      es: 'water_yield_es'
+    }
   },
   rcp_45_water_yield: {
-    wms_name: 'chile_mapper:rcp_45_water_yield'
+    wms_name: 'chile_mapper:rcp_45_water_yield',
+    legend_style: {
+      en: 'rcp_water_yield_en',
+      es: 'rcp_water_yield_es'
+    }
   },
   rcp_85_water_yield: {
-    wms_name: 'chile_mapper:rcp_85_water_yield'
+    wms_name: 'chile_mapper:rcp_85_water_yield',
+    legend_style: {
+      en: 'rcp_water_yield_en',
+      es: 'rcp_water_yield_es'
+    }
   },
   habitat_map: {
-    wms_name: 'chile_mapper:habitat_landuse_map'
+    wms_name: 'chile_mapper:habitat_landuse_map',
+    legend_style: {
+      en: 'habitat_map_en',
+      es: 'habitat_map_es'
+    }
   },
   soil_loss: {
-    wms_name: 'chile_mapper:soil_loss'
+    wms_name: 'chile_mapper:soil_loss',
+    legend_style: {
+      en: 'soil_loss_en',
+      es: 'soil_loss_es'
+    }
   },
   nitrogen: {
-    wms_name: 'chile_mapper:organic_nitrogen_yield'
+    wms_name: 'chile_mapper:organic_nitrogen_yield',
+    legend_style: {
+      en: 'organic_nitrogen_yield_en',
+      es: 'organic_nitrogen_yield_es'
+    }
   },
   phosphorus: {
-    wms_name: 'chile_mapper:organic_phosphorus_yield'
+    wms_name: 'chile_mapper:organic_phosphorus_yield',
+    legend_style: {
+      en: 'organic_phosphorus_yield_en',
+      es: 'organic_phosphorus_yield_es'
+    }
   },
   soil_water: {
-    wms_name: 'chile_mapper:average_daily_soil_water_content'
+    wms_name: 'chile_mapper:average_daily_soil_water_content',
+    legend_style: {
+      en: 'average_daily_soil_water_content_en',
+      es: 'average_daily_soil_water_content_es'
+    }
   },
   mean_percolation: {
-    wms_name: 'chile_mapper:mean_percolation'
+    wms_name: 'chile_mapper:mean_percolation',
+    legend_style: {
+      en: 'mean_percolation_en',
+      es: 'mean_percolation_es'
+    }
   }
 }
 
@@ -53,7 +101,11 @@ export const overlayLayers = {
   },
   rivers: {
     wms_name: 'chile_mapper:mean_daily_streamflow',
-    display_legend: true
+    display_legend: true,
+    legend_style: {
+      en: 'mean_daily_streamflow_en',
+      es: 'mean_daily_streamflow_es'
+    }
   }
 }
 
