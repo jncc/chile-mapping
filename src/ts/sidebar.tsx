@@ -111,17 +111,17 @@ export default class LayerControls extends React.Component {
 
   render() {
     let baseLayerOptions = []
-    let selectText = ''
-    if (getConfig(window.location.search).language == 'en') {
-      selectText = 'Select a layer'
-    } else {
-      selectText = 'Select a layer'
-    }
-    baseLayerOptions.push(
-      <option selected disabled hidden>
-        {selectText}
-      </option>
-    )
+    // let selectText = ''
+    // if (getConfig(window.location.search).language == 'en') {
+    //   selectText = 'Select a layer'
+    // } else {
+    //   selectText = 'Select a layer'
+    // }
+    // baseLayerOptions.push(
+    //   <option selected disabled hidden>
+    //     {selectText}
+    //   </option>
+    // )
     for (let layer of layers.keys(layers.baseLayers)){
       baseLayerOptions.push(
         <option key={layer} value={layer}>
