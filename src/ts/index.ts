@@ -12,9 +12,11 @@ import 'url-search-params-polyfill'
 
 import { getConfig } from './config'
 import { createMap } from './map'
+import { createSidebar } from './sidebar'
 
 let config = getConfig(window.location.search)
 
-// draw the leaflet map in the div
+// draw the leaflet map in the div and add the sidebar
 let div = document.getElementById('map') as HTMLElement
-createMap(div, config)
+let map = createMap(div, config)
+createSidebar(map, config)
