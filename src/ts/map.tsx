@@ -4,21 +4,19 @@ import { Config } from './config.js'
 import * as content from '../content.json'
 import * as layers from './layers'
 import { keys } from './layers'
-import * as React from 'react'
-import { render } from 'react-dom'
-import Sidebar from './sidebar'
 import '../js/leaflet-sidebar.min.js'
 
 let overlayMaps = {} as any
+let underlayMaps = {} as any
 let baseMaps = {} as any
 let map: L.Map
-let streamflowLegend: L.Control
+let tileLayer: L.TileLayer
 export function createMap(container: HTMLElement, config: Config) {
   
-  map = L.map(container, {zoomControl: false}).setView([-34.696461172723474, -71.09802246093751], 9)
+  map = L.map(container, {zoomControl: false}).setView([-34.596461172723474, -71.29802246093751], 10)
   new L.Control.Zoom({ position: 'bottomright' }).addTo(map)
   
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map)
 
@@ -33,7 +31,6 @@ export function createMap(container: HTMLElement, config: Config) {
     })
     Object.assign(baseMaps, {[baseLayer]: layer})
   }
-  updateBaselayer('dem') // default base layer
 
   // setup overlays  
   for (let overlay of keys(layers.overlayLayers)) {
@@ -46,58 +43,21 @@ export function createMap(container: HTMLElement, config: Config) {
     })
     Object.assign(overlayMaps, {[overlay]: layer})
   }
-  updateOverlay('hillshade', true) // default overlay
 
-  // set up sidebar using react component
-  let sidebarControl = L.control.sidebar('sidebar', {position: 'left'})
-  sidebarControl.addTo(map)
-  let sidebarHome: HTMLElement | null = document.getElementById('home')
-  if (sidebarHome) {
-    render(<Sidebar/>, sidebarHome)
+  // setup underlays  
+  for (let underlay of keys(layers.underlayLayers)) {
+    let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
+      layers: layers.underlayLayers[underlay].wms_name,
+      transparent: true,
+      format: 'image/png',
+      opacity: 1,
+      attribution: content.underlay_layers[underlay].attribution[config.language]
+    })
+    Object.assign(underlayMaps, {[underlay]: layer})
   }
+  updateUnderlay('sentinel_2', true) // sentinel layer on as landing page view
 
-  let sidebarAbout: HTMLElement | null = document.getElementById('about')
-  if (sidebarAbout) {
-    let about: HTMLElement | null = L.DomUtil.get('about')
-    if (about) {
-      let aboutContainer = L.DomUtil.create('div', 'sidebar-about')
-      aboutContainer.innerHTML += '<h2>'+content.info_panel.title[config.language]+'</h2>'
-      aboutContainer.innerHTML += '<p>'+content.info_panel.description[config.language]+'</p>'
-
-      let getStartedButton = L.DomUtil.create('button', 'btn btn-primary')
-      getStartedButton.innerHTML += 'Get started'
-      getStartedButton.addEventListener('click', function() {
-        let sidebarHome: HTMLElement | null = document.getElementsByClassName('fa fa-bars')[0] as HTMLElement
-        if (sidebarHome) {
-          sidebarHome.click()
-        }
-      })
-      aboutContainer.appendChild(getStartedButton)
-
-      about.appendChild(aboutContainer)
-    }
-  }
-
-  let aboutTab: HTMLElement | null = document.getElementById('about-tab')
-  if (aboutTab) {
-    aboutTab.click() // default
-  }
-
-  // set up a separate legend for the streamflow overlay
-  streamflowLegend = new L.Control({position: 'topright'})
-  let legendUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms?'
-    + 'REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&LAYER='
-    + layers.overlayLayers.rivers.wms_name
-    + '&STYLE='
-    + layers.overlayLayers.rivers.legend_style[config.language]
-  streamflowLegend.onAdd = function () {
-    let div = L.DomUtil.create('div', 'overlay-legend')
-    div.innerHTML += '<p>'+content.overlay_layers.rivers.title[config.language]+'</p>'
-    div.innerHTML += '<img src="' + legendUrl + '" />'
-    L.DomEvent.disableClickPropagation(div)
-    L.DomEvent.disableScrollPropagation(div)
-    return div
-  }
+  return map
 }
 
 export function refreshOverlay(layer : keyof typeof layers.overlayLayers) {
@@ -107,16 +67,18 @@ export function refreshOverlay(layer : keyof typeof layers.overlayLayers) {
 export function updateOverlay(layer : keyof typeof layers.overlayLayers, checked : boolean) {
   if (checked) {
     overlayMaps[layer].addTo(map)
-
-    if (layer === 'rivers') {
-      streamflowLegend.addTo(map)
-    }
   } else {
     map.removeLayer(overlayMaps[layer])
+  }
+}
 
-    if (layer === 'rivers') {
-      streamflowLegend.remove()
-    }
+export function updateUnderlay(layer : keyof typeof layers.underlayLayers, checked : boolean) {
+  if (checked) {
+    underlayMaps[layer].addTo(map)
+    underlayMaps[layer].bringToBack()
+    tileLayer.bringToBack()
+  } else {
+    map.removeLayer(underlayMaps[layer])
   }
 }
 
@@ -127,4 +89,10 @@ export function updateBaselayer(layer : keyof typeof layers.baseLayers) {
   }
 
   baseMaps[layer].addTo(map)
+}
+
+export function removeBaselayer() {
+  for (let baseLayer of keys(baseMaps)) {
+    map.removeLayer(baseMaps[baseLayer])
+  }
 }

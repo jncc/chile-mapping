@@ -7,6 +7,13 @@ export const baseLayers = {
       es: null
     }
   },
+  habitat_map: {
+    wms_name: 'chile_mapper:habitat_landuse_map',
+    legend_style: {
+      en: 'habitat_map_en',
+      es: 'habitat_map_es'
+    }
+  },
   burn_avoidance: {
     wms_name: 'chile_mapper:burn_avoidance',
     legend_style: {
@@ -42,18 +49,18 @@ export const baseLayers = {
       es: 'rcp_water_yield_es'
     }
   },
-  habitat_map: {
-    wms_name: 'chile_mapper:habitat_landuse_map',
+  soil_water: {
+    wms_name: 'chile_mapper:average_daily_soil_water_content',
     legend_style: {
-      en: 'habitat_map_en',
-      es: 'habitat_map_es'
+      en: 'average_daily_soil_water_content_en',
+      es: 'average_daily_soil_water_content_es'
     }
   },
-  soil_loss: {
-    wms_name: 'chile_mapper:soil_loss',
+  mean_percolation: {
+    wms_name: 'chile_mapper:mean_percolation',
     legend_style: {
-      en: 'soil_loss_en',
-      es: 'soil_loss_es'
+      en: 'mean_percolation_en',
+      es: 'mean_percolation_es'
     }
   },
   nitrogen: {
@@ -70,18 +77,32 @@ export const baseLayers = {
       es: 'organic_phosphorus_yield_es'
     }
   },
-  soil_water: {
-    wms_name: 'chile_mapper:average_daily_soil_water_content',
+  soil_loss: {
+    wms_name: 'chile_mapper:soil_loss',
     legend_style: {
-      en: 'average_daily_soil_water_content_en',
-      es: 'average_daily_soil_water_content_es'
+      en: 'soil_loss_en',
+      es: 'soil_loss_es'
     }
   },
-  mean_percolation: {
-    wms_name: 'chile_mapper:mean_percolation',
+  baseline_water_stress: {
+    wms_name: 'chile_mapper:baseline_water_stress_days',
     legend_style: {
-      en: 'mean_percolation_en',
-      es: 'mean_percolation_es'
+      en: 'water_stress_days_en',
+      es: 'water_stress_days_es'
+    }
+  },
+  rcp_45_water_stress: {
+    wms_name: 'chile_mapper:rcp_45_water_stress_days',
+    legend_style: {
+      en: 'water_stress_days_en',
+      es: 'water_stress_days_es'
+    }
+  },
+  rcp_85_water_stress: {
+    wms_name: 'chile_mapper:rcp_85_water_stress_days',
+    legend_style: {
+      en: 'water_stress_days_en',
+      es: 'water_stress_days_es'
     }
   }
 }
@@ -106,6 +127,13 @@ export const overlayLayers = {
       en: 'mean_daily_streamflow_en',
       es: 'mean_daily_streamflow_es'
     }
+  }
+}
+
+export const underlayLayers = {
+  sentinel_2: {
+    wms_name: 'chile_mapper:sen2_20181021_mosaic_rendered',
+    display_legend: false
   }
 }
 
