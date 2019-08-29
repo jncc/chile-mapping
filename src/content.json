@@ -14,6 +14,20 @@
         }
     },
     "base_layers": {
+        "no_layer": {
+            "title": {
+                "en": "No layer selected",
+                "es": "No layer selected"
+            },
+            "description": {
+                "en": "",
+                "es": ""
+            },
+            "attribution": {
+                "en": "",
+                "es": ""
+            }
+        },
         "dem": {
             "title": {
                 "en": "Digital Elevation Model (DEM)",

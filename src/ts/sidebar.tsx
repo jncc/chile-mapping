@@ -51,7 +51,7 @@ export function createSidebar(map: L.Map, config: Config) {
 export default class LayerControls extends React.Component {
   state = {
     hideBaseLayer: true,
-    baseLayer: 'dem' as keyof typeof layers.baseLayers,
+    baseLayer: 'no_layer' as keyof typeof layers.baseLayers,
     overlays: {
       'hillshade': false
     } as any,
@@ -64,7 +64,7 @@ export default class LayerControls extends React.Component {
     if (event.target.value == 'no_layer') {
       map.removeBaselayer()
       this.setState({
-        hideBaseLayer: false,
+        hideBaseLayer: true,
         baseLayer: event.target.value,
         overlays: this.state.overlays,
         underlays: this.state.underlays

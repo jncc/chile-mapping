@@ -13,7 +13,8 @@ let map: L.Map
 let tileLayer: L.TileLayer
 export function createMap(container: HTMLElement, config: Config) {
   
-  map = L.map(container, {zoomControl: false}).setView([-34.596461172723474, -71.29802246093751], 10)
+  map = L.map(container, {zoomControl: false, wheelDebounceTime: 300})
+    .setView([-34.596461172723474, -71.29802246093751], 10)
   new L.Control.Zoom({ position: 'bottomright' }).addTo(map)
   
   tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -83,12 +84,12 @@ export function updateUnderlay(layer : keyof typeof layers.underlayLayers, check
 }
 
 export function updateBaselayer(layer : keyof typeof layers.baseLayers) {
-
   for (let baseLayer of keys(baseMaps)) {
     map.removeLayer(baseMaps[baseLayer])
   }
-
-  baseMaps[layer].addTo(map)
+  if (layer !== 'no_layer') {
+    baseMaps[layer].addTo(map)
+  }
 }
 
 export function removeBaselayer() {

@@ -1,5 +1,12 @@
 // define the layers statically
 export const baseLayers = {
+  no_layer: {
+    wms_name: '',
+    legend_style: {
+      en: null,
+      es: null
+    }
+  },
   dem: {
     wms_name: 'chile_mapper:dem_aoi_10m',
     legend_style: {
