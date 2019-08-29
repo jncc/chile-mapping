@@ -49,6 +49,27 @@ export const baseLayers = {
       es: 'rcp_water_yield_es'
     }
   },
+  baseline_water_stress: {
+    wms_name: 'chile_mapper:baseline_water_stress_days',
+    legend_style: {
+      en: 'water_stress_days_en',
+      es: 'water_stress_days_es'
+    }
+  },
+  rcp_45_water_stress: {
+    wms_name: 'chile_mapper:rcp_45_water_stress_days',
+    legend_style: {
+      en: 'water_stress_days_en',
+      es: 'water_stress_days_es'
+    }
+  },
+  rcp_85_water_stress: {
+    wms_name: 'chile_mapper:rcp_85_water_stress_days',
+    legend_style: {
+      en: 'water_stress_days_en',
+      es: 'water_stress_days_es'
+    }
+  },
   soil_water: {
     wms_name: 'chile_mapper:average_daily_soil_water_content',
     legend_style: {
@@ -82,27 +103,6 @@ export const baseLayers = {
     legend_style: {
       en: 'soil_loss_en',
       es: 'soil_loss_es'
-    }
-  },
-  baseline_water_stress: {
-    wms_name: 'chile_mapper:baseline_water_stress_days',
-    legend_style: {
-      en: 'water_stress_days_en',
-      es: 'water_stress_days_es'
-    }
-  },
-  rcp_45_water_stress: {
-    wms_name: 'chile_mapper:rcp_45_water_stress_days',
-    legend_style: {
-      en: 'water_stress_days_en',
-      es: 'water_stress_days_es'
-    }
-  },
-  rcp_85_water_stress: {
-    wms_name: 'chile_mapper:rcp_85_water_stress_days',
-    legend_style: {
-      en: 'water_stress_days_en',
-      es: 'water_stress_days_es'
     }
   }
 }
