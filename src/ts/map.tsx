@@ -14,7 +14,7 @@ let tileLayer: L.TileLayer
 export function createMap(container: HTMLElement, config: Config) {
   
   map = L.map(container, {zoomControl: false, wheelDebounceTime: 300})
-    .setView([-34.596461172723474, -71.29802246093751], 10)
+    .setView([-34.556461172723474, -71.29802246093751], 10)
   new L.Control.Zoom({ position: 'bottomright' }).addTo(map)
   
   tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -65,6 +65,10 @@ export function refreshOverlay(layer : keyof typeof layers.overlayLayers) {
   overlayMaps[layer].bringToFront()
 }
 
+export function refreshBaseLayer(layer : keyof typeof layers.baseLayers) {
+  baseMaps[layer].bringToFront()
+}
+
 export function updateOverlay(layer : keyof typeof layers.overlayLayers, checked : boolean) {
   if (checked) {
     overlayMaps[layer].addTo(map)
@@ -76,14 +80,12 @@ export function updateOverlay(layer : keyof typeof layers.overlayLayers, checked
 export function updateUnderlay(layer : keyof typeof layers.underlayLayers, checked : boolean) {
   if (checked) {
     underlayMaps[layer].addTo(map)
-    underlayMaps[layer].bringToBack()
-    tileLayer.bringToBack()
   } else {
     map.removeLayer(underlayMaps[layer])
   }
 }
 
-export function updateBaselayer(layer : keyof typeof layers.baseLayers) {
+export function updateBaseLayer(layer : keyof typeof layers.baseLayers) {
   for (let baseLayer of keys(baseMaps)) {
     map.removeLayer(baseMaps[baseLayer])
   }

@@ -8,7 +8,7 @@
         "es2015",
         "es2016.array.include",
         "es2017.object",
-        "es2017.string",
+        "es2017.string"
     ],
     "jsx": "react",
     "outDir": "./tsc/", // .gitignored directory for when `tsc` is run so .js files are not written out next to source files

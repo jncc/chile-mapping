@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "config.js": "^0.1.0",
+    "es6-object-assign": "^1.1.0",
     "leaflet": "1.5.1",
     "ts-polyfill": "3.5.1",
     "url-search-params-polyfill": "6.0.0"

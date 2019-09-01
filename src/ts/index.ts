@@ -1,14 +1,15 @@
-
-// styles
-import '../styles.less'
-import 'leaflet/dist/leaflet.css'
-import '../css/leaflet-sidebar.min.css'
-
 // polyfills
 import 'ts-polyfill/lib/es2016-array-include'
 import 'ts-polyfill/lib/es2017-object'
 import 'ts-polyfill/lib/es2017-string'
 import 'url-search-params-polyfill'
+import 'es6-object-assign/auto'
+
+// styles
+import '../styles.less'
+import 'leaflet/dist/leaflet.css'
+import '../css/leaflet-sidebar.css'
+import '../../lib/fontawesome-5.10.2/css/all.css'
 
 import { getConfig } from './config'
 import { createMap } from './map'

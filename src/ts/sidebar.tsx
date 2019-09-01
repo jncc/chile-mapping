@@ -19,13 +19,15 @@ export function createSidebar(map: L.Map, config: Config) {
     let home: HTMLElement | null = L.DomUtil.get('home')
     if (home) {
       let homeContainer = L.DomUtil.create('div', 'sidebar-home')
+      homeContainer.innerHTML += '<h3><span id="close-home" class="sidebar-close">'
+        + '<i class="fas fa-caret-left"></i></span></h3>'
       homeContainer.innerHTML += '<h2>'+content.info_panel.title[config.language]+'</h2>'
-      homeContainer.innerHTML += '<p>'+content.info_panel.description[config.language]+'</p>'
+      homeContainer.innerHTML += content.info_panel.description[config.language]
 
       let getStartedButton = L.DomUtil.create('button', 'btn btn-primary start')
       getStartedButton.innerHTML += 'Get started'
       getStartedButton.addEventListener('click', function() {
-        let sidebarLayers: HTMLElement | null = document.getElementsByClassName('fa fa-cog')[0] as HTMLElement
+        let sidebarLayers: HTMLElement | null = document.getElementsByClassName('fas fa-layer-group')[0] as HTMLElement
         if (sidebarLayers) {
           sidebarLayers.click()
         }
@@ -40,6 +42,27 @@ export function createSidebar(map: L.Map, config: Config) {
     if (layerControls) {
       render(<LayerControls/>, layerControls)
     }
+  }
+
+  // event listeners for close buttons
+  let homeClose: HTMLElement | null = document.getElementById('close-home')
+  if (homeClose) {
+    homeClose.addEventListener('click', function() {
+      let homeTab: HTMLElement | null = document.getElementById('home-tab')
+      if (homeTab) {
+        homeTab.click()
+      }
+    })
+  }
+
+  let layersClose: HTMLElement | null = document.getElementById('close-layers')
+  if (layersClose) {
+    layersClose.addEventListener('click', function() {
+      let layersTab: HTMLElement | null = document.getElementById('layers-tab')
+      if (layersTab) {
+        layersTab.click()
+      }
+    })
   }
 
   let homeTab: HTMLElement | null = document.getElementById('home-tab')
@@ -76,7 +99,7 @@ export default class LayerControls extends React.Component {
         overlays: this.state.overlays,
         underlays: this.state.underlays
       })
-      map.updateBaselayer(event.target.value as keyof typeof layers.baseLayers)
+      map.updateBaseLayer(event.target.value as keyof typeof layers.baseLayers)
       for (let overlay of layers.keys(this.state.overlays)) {
         if (this.state.overlays[overlay]){
           map.refreshOverlay(overlay as keyof typeof layers.overlayLayers)
@@ -107,21 +130,16 @@ export default class LayerControls extends React.Component {
       underlays: updatedUnderlays
     })
     map.updateUnderlay(event.target.value as keyof typeof layers.underlayLayers, event.target.checked)
+    map.refreshBaseLayer(this.state.baseLayer)
+    for (let overlay of layers.keys(this.state.overlays)) {
+      if (this.state.overlays[overlay]){
+        map.refreshOverlay(overlay as keyof typeof layers.overlayLayers)
+      }
+    }
   }
 
   render() {
     let baseLayerOptions = []
-    // let selectText = ''
-    // if (getConfig(window.location.search).language == 'en') {
-    //   selectText = 'Select a layer'
-    // } else {
-    //   selectText = 'Select a layer'
-    // }
-    // baseLayerOptions.push(
-    //   <option selected disabled hidden>
-    //     {selectText}
-    //   </option>
-    // )
     for (let layer of layers.keys(layers.baseLayers)){
       baseLayerOptions.push(
         <option key={layer} value={layer}>
@@ -151,7 +169,9 @@ export default class LayerControls extends React.Component {
         overlayOptions.push(
           <div className="overlay-legend">
             <img src={legendUrl} />
-            <p>{content.overlay_layers.rivers.description[getConfig(window.location.search).language]}</p>
+            <div dangerouslySetInnerHTML={
+              {__html: content.overlay_layers.rivers.description[getConfig(window.location.search).language]}}>
+            </div>
           </div>
         )
       }
@@ -202,14 +222,16 @@ export default class LayerControls extends React.Component {
     let info = []
     if (!this.state.hideBaseLayer) {
       info.push(
-        <p dangerouslySetInnerHTML={{__html: content.base_layers[this.state.baseLayer as keyof typeof layers.baseLayers]
+        <div dangerouslySetInnerHTML={
+          {__html: content.base_layers[this.state.baseLayer as keyof typeof layers.baseLayers]
           .description[getConfig(window.location.search).language]}}>
-        </p>
+        </div>
       )
     }
 
     return (
       <div className="sidebar-layers">
+        <h3><span id="close-layers" className="sidebar-close"><i className="fas fa-caret-left"></i></span></h3>
         <div className="layer-select">
           {underlayOptions}
           {overlayOptions}
