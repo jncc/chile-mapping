@@ -23,7 +23,7 @@ export function createMap(container: HTMLElement, config: Config) {
 
   // setup base maps
   for (let baseLayer of keys(layers.baseLayers)) {
-    let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
+    let layer = L.tileLayer.wms(process.env.GEOSERVER_URL+'/chile_mapper/wms?', {
       layers: layers.baseLayers[baseLayer].wms_name,
       transparent: true,
       format: 'image/png',
@@ -35,7 +35,7 @@ export function createMap(container: HTMLElement, config: Config) {
 
   // setup overlays  
   for (let overlay of keys(layers.overlayLayers)) {
-    let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
+    let layer = L.tileLayer.wms(process.env.GEOSERVER_URL+'/chile_mapper/wms?', {
       layers: layers.overlayLayers[overlay].wms_name,
       transparent: true,
       format: 'image/png',
@@ -47,7 +47,7 @@ export function createMap(container: HTMLElement, config: Config) {
 
   // setup underlays  
   for (let underlay of keys(layers.underlayLayers)) {
-    let layer = L.tileLayer.wms('https://ows.jncc.gov.uk/chile_mapper/wms?', {
+    let layer = L.tileLayer.wms(process.env.GEOSERVER_URL+'/chile_mapper/wms?', {
       layers: layers.underlayLayers[underlay].wms_name,
       transparent: true,
       format: 'image/png',

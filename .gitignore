@@ -8,3 +8,5 @@ tsc/
 # parcel.js
 .cache
 dist/
+
+.env

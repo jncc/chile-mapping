@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { render } from 'react-dom'
-import { Config, getConfig, parseLanguage } from './config'
+import { Config, getConfig } from './config'
 import * as layers from './layers'
 import * as content from '../content.json'
 import * as map from './map'
 
-const legendBaseUrl = 'https://ows.jncc.gov.uk/chile_mapper/wms'
+const legendBaseUrl = process.env.GEOSERVER_URL+'/chile_mapper/wms'
   + '?REQUEST=GetLegendGraphic&FORMAT=image/png&TRANSPARENT=true&WIDTH=20'
   + '&LEGEND_OPTIONS=dx:10;fontName:Arial;fontSize:12;fontStyle:normal'
 
