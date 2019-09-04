@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 // polyfills
 import 'ts-polyfill/lib/es2016-array-include'
 import 'ts-polyfill/lib/es2017-object'
