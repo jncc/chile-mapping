@@ -25,7 +25,7 @@ export function createSidebar(map: L.Map, config: Config) {
       homeContainer.innerHTML += content.info_panel.description[config.language]
 
       let getStartedButton = L.DomUtil.create('button', 'btn btn-primary start')
-      getStartedButton.innerHTML += 'Get started'
+      getStartedButton.innerHTML += content.info_panel.button_text[config.language]
       getStartedButton.addEventListener('click', function() {
         let sidebarLayers: HTMLElement | null = document.getElementsByClassName('fas fa-layer-group')[0] as HTMLElement
         if (sidebarLayers) {
@@ -163,9 +163,9 @@ export default class LayerControls extends React.Component {
       )
       if (this.state.overlays[layer] && layers.overlayLayers[layer].display_legend) {
         let legendUrl = legendBaseUrl+'&LAYER='
-          + layers.overlayLayers.rivers.wms_name
+          + layers.overlayLayers[layer].wms_name
           + '&STYLE='
-          + layers.overlayLayers.rivers.legend_style[getConfig(window.location.search).language]
+          + layers.overlayLayers[layer].legend_style[getConfig(window.location.search).language]
         overlayOptions.push(
           <div className="overlay-legend">
             <img src={legendUrl} />
