@@ -117,15 +117,27 @@ export const baseLayers = {
 export const overlayLayers = {
   hillshade: {
     wms_name: 'chile_mapper:dem_aoi_10m_hillshade',
-    display_legend: false
+    display_legend: false,
+    legend_style: {
+      en: '',
+      es: ''
+    }
   },
   roads: {
     wms_name: 'chile_mapper:roads',
-    display_legend: false
+    display_legend: false,
+    legend_style: {
+      en: '',
+      es: ''
+    }
   },
   subbasins: {
     wms_name: 'chile_mapper:subbasins',
-    display_legend: false
+    display_legend: false,
+    legend_style: {
+      en: '',
+      es: ''
+    }
   },
   rivers: {
     wms_name: 'chile_mapper:mean_daily_streamflow',
