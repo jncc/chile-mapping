@@ -1,4 +1,3 @@
-
 import * as L from 'leaflet'
 import { Config } from './config.js'
 import * as content from '../content.json'
@@ -13,9 +12,15 @@ let map: L.Map
 let tileLayer: L.TileLayer
 export function createMap(container: HTMLElement, config: Config) {
   
-  map = L.map(container, {zoomControl: false, wheelDebounceTime: 300})
-    .setView([-34.556461172723474, -71.29802246093751], 10)
+  map = L.map(container, {
+    zoomControl: false, 
+    wheelDebounceTime: 300,
+    maxZoom: 15,
+    minZoom: 10
+  }).setView([-34.556461172723474, -71.29802246093751], 10)
   new L.Control.Zoom({ position: 'bottomright' }).addTo(map)
+
+  map.setMaxBounds(map.getBounds())
   
   tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
