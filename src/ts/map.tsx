@@ -22,7 +22,7 @@ export function createMap(container: HTMLElement, config: Config) {
 
   var bounds = new L.LatLngBounds(
     new L.LatLng(-34.12828876137638, -70.23952124718542), 
-    new L.LatLng(-35.007681075929895, -71.90348420892754)).pad(0.1);
+    new L.LatLng(-35.007681075929895, -71.90348420892754)).pad(0.1)
 
   map.fitBounds(bounds)
   map.setMaxBounds(bounds)
