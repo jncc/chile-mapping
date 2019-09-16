@@ -11,16 +11,21 @@ let baseMaps = {} as any
 let map: L.Map
 let tileLayer: L.TileLayer
 export function createMap(container: HTMLElement, config: Config) {
-  
+           
   map = L.map(container, {
     zoomControl: false, 
     wheelDebounceTime: 300,
     maxZoom: 15,
-    minZoom: 10
-  }).setView([-34.556461172723474, -71.29802246093751], 10)
+    minZoom: 8
+  })
   new L.Control.Zoom({ position: 'bottomright' }).addTo(map)
 
-  map.setMaxBounds(map.getBounds())
+  var bounds = new L.LatLngBounds(
+    new L.LatLng(-34.12828876137638, -70.23952124718542), 
+    new L.LatLng(-35.007681075929895, -71.90348420892754)).pad(0.1);
+
+  map.fitBounds(bounds)
+  map.setMaxBounds(bounds)
   
   tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
