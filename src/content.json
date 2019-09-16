@@ -216,7 +216,7 @@
                 "es": "Días con estrés hídrico en los escenarios de cambio climático RCP4.5."
             },
             "description": {
-                "en": "<p>The map shows the water stress days the crops experience under future climate change scenarios based upon the Relative Greenhouse Gas Concentration Pathway (RCP) 4.5 scenario. RCP 4.5 represents increasing greenhouse gas emissions over time, representative of a scenarios that lead to moderate greenhouse gas concentration levels by 2100 that results in 8.5 Watts of positive radiative forcing per square metre.</p>",
+                "en": "<p>The map shows the water stress days the crops experience under future climate change scenarios based upon the Relative Greenhouse Gas Concentration Pathway (RCP) 4.5 scenario. RCP 4.5 represents increasing greenhouse gas emissions over time, representative of a scenarios that lead to moderate greenhouse gas concentration levels by 2100 that results in 4.5 Watts of positive radiative forcing per square metre.</p>",
                 "es": "<p>Días con estrés hídrico en los escenarios de cambio climático RCP4.5.</p>"
             },
             "attribution": {
