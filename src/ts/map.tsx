@@ -24,8 +24,10 @@ export function createMap(container: HTMLElement, config: Config) {
     new L.LatLng(-34.12828876137638, -70.23952124718542), 
     new L.LatLng(-35.007681075929895, -71.90348420892754)).pad(0.1)
 
+  var maxBounds = bounds.pad(0.8)
+
   map.fitBounds(bounds)
-  map.setMaxBounds(bounds)
+  map.setMaxBounds(maxBounds)
   
   tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
