@@ -203,7 +203,7 @@
             },
             "description": {
                 "en": "<p>Water stress is used in viticulture to increase the fruit quality. However, if crops are in water deficit conditions this can significantly reduce the production yield. Climatic conditions of vinicultural areas, including humidity and water stress, may also influence the microbial diversity and thus terroir, potentially contributing to the distinctive properties of wine from each region.</p><p>The map shows the water stressed days experienced by the crops under the baseline scenario. Water stress is calculated as a function of the amount of water uptake of the plant during the day and the maximum amount of transpiration.</p>",
-                "es": "<p>Días con estrés hídrico.</p>"
+                "es": "<p>El estrés hídrico se utiliza en viticultura para aumentar la calidad del fruto en las vides, sin embargo, si los cultivos tienen un déficit de riego, esto puede reducir significativamente el rendimiento de la producción. Las condiciones climáticas de las zonas vinícolas, incluida la humedad y el estrés hídrico, también pueden influir en la diversidad microbiana y, por lo tanto, en el terruño, lo que puede contribuir a las propiedades distintivas del vino de cada región.</p><p>Este mapa muestra los días de estrés hídrico experimentados por los cultivos en el scenario de referencia. El estrés hídrico se calcula en función de la cantidad de absorción de agua por parte de la planta, durante el día y la cantidad máxima de transpiración.</p>"
             },
             "attribution": {
                 "en": "© JNCC",
@@ -217,7 +217,7 @@
             },
             "description": {
                 "en": "<p>The map shows the water stress days the crops experience under future climate change scenarios based upon the Relative Greenhouse Gas Concentration Pathway (RCP) 4.5 scenario. RCP 4.5 represents increasing greenhouse gas emissions over time, representative of a scenarios that lead to moderate greenhouse gas concentration levels by 2100 that results in 4.5 Watts of positive radiative forcing per square metre.</p>",
-                "es": "<p>Días con estrés hídrico en los escenarios de cambio climático RCP4.5.</p>"
+                "es": "<p>Este mapa muestra el los días de estrés hídrico experimentados por los cultivos modelada bajo escenarios futuros de cambio climático, basado en la Ruta Relativa de Concentración de Gases de Invernadero (RCP) 4.5. RCP 4.5 representa un escenario de estabilización de concentración atmosférica modelada para el año 2100 que resulta en 4.5 Watts de forzamiento radiativo positivo por metro cuadrado.</p>"
             },
             "attribution": {
                 "en": "© JNCC",
@@ -231,7 +231,7 @@
             },
             "description": {
                 "en": "<p>The map shows the water stress days the crops experience under future climate change scenarios based upon the Relative Greenhouse Gas Concentration Pathway (RCP) 8.5 scenario. RCP 8.5 represents increasing greenhouse gas emissions over time, representative of a scenarios that lead to high greenhouse gas concentration levels by 2100 that results in 8.5 Watts of positive radiative forcing per square metre.</p>",
-                "es": "<p>Días con estrés hídrico en los escenarios de cambio climático RCP8.5</p>"
+                "es": "<p>Este mapa muestra el los días de estrés hídrico experimentados por los cultivos modelada bajo escenarios futuros de cambio climático, basado en la Ruta Relativa de Concentración de Gases de Invernadero (RCP) 8.5. RCP 8.5 representa un escenario de estabilización de concentración atmosférica modelada para el año 2100 que resulta en 8.5 Watts de forzamiento radiativo positivo por metro cuadrado.</p>"
             },
             "attribution": {
                 "en": "© JNCC",
